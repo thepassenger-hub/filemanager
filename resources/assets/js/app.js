@@ -14,6 +14,11 @@ require('./bootstrap');
  */
 
 Vue.component('files', require('./components/Files.vue'));
+Vue.component('file', require('./components/File.vue'));
+Vue.component('dir', require('./components/Dir.vue'));
+Vue.component('chmod', require('./components/Chmod.vue'));
+Vue.component('renameFile', require('./components/RenameFile.vue'));
+Vue.component('createFile', require('./components/CreateFile.vue'));
 Vue.component('deleteFileNotification', require('./components/DeleteFileNotification.vue'));
 Vue.component('moveFilePanel', require('./components/MoveFilePanel.vue'));
 Vue.filter( 'prettyPrint', function(path){
@@ -25,5 +30,7 @@ Vue.filter( 'prettyPrint', function(path){
 
 const app = new Vue({
     el: '#app',
-    
+
 });
+
+

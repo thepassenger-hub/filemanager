@@ -80,15 +80,16 @@ class FilesController extends Controller
 
     public function rename()
     {
-        $newName = request('newName');
         $file = request('file');
-        if (\File::exists('newName')){
+        $newName = request('newName');
+        $path = parentPath($file);
+        $newPath = $path . '/' . $newName;
+        
+        if (\File::exists($newPath)){
             return response('Error: There is already another file with that name', 409);
         }
         if (\File::exists($file)) {
             try {
-                $path = parentPath($file);
-                $newPath = $path . '/' . $newName;
                 \File::move($file, $newPath);
             }
             catch (Exception $e) {
