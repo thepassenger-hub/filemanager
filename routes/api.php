@@ -25,6 +25,6 @@ Route::group(['middleware' => 'api'], function() {
     Route::patch('files/move', 'FilesController@move');
     Route::put('files/copy', 'FilesController@copy');
     Route::patch('files/rename', 'FilesController@rename');
-    
+    Route::patch('files/permission', 'FilesController@permission');
     
 });

@@ -1,7 +1,7 @@
 <template>
     <li>
         <form @submit.prevent="$emit('createFile', newFileName)" id="newFileForm">
-            <span class="fa fa-file"></span>                                
+            <span :class="className"></span>                                
             <input @keyup.esc="$emit('clearNewFileForm')" v-focus @blur="$emit('clearNewFileForm')" class="input" v-model="newFileName" placeholder="file.extension" >
         </form>
     </li>
@@ -9,17 +9,19 @@
 
 <script>
     export default {
+        props: ["type"],
         data: function(){
             return {
-                'newFileName': ''
+                newFileName: ''
             }
         },
-        directives: {
-            focus: {
-                inserted: function (el) {
-                    el.focus()
-                }
-            },
+        created(){
+            console.log(this)
+        },
+        computed: {
+            className() {
+                return "fa fa-"+this.type;
+            }
         }
     }
 </script>

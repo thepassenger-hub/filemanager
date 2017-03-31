@@ -16,6 +16,8 @@ require('./bootstrap');
 Vue.component('files', require('./components/Files.vue'));
 Vue.component('file', require('./components/File.vue'));
 Vue.component('dir', require('./components/Dir.vue'));
+Vue.component('notifyError', require('./components/NotifyError.vue'));
+Vue.component('notifySuccess', require('./components/NotifySuccess.vue'));
 Vue.component('chmod', require('./components/Chmod.vue'));
 Vue.component('renameFile', require('./components/RenameFile.vue'));
 Vue.component('createFile', require('./components/CreateFile.vue'));
@@ -27,9 +29,23 @@ Vue.filter( 'prettyPrint', function(path){
             return path;
         }
 )
+Vue.directive('focus', {
+  // When the bound element is inserted into the DOM...
+  inserted: function (el) {
+    // Focus the element
+    el.focus()
+  }
+})
 
 const app = new Vue({
     el: '#app',
+    directives: {
+        focus: {
+            inserted: function (el) {
+                el.focus()
+            }
+        },
+    }
 
 });
 

@@ -9,19 +9,12 @@
     export default {
         data: function(){
             return {
-                'newFileName': this.name
+                newFileName: this.name
             }
         },
         props: ["name"],
         created: function() {
             this.$emit('selected');
-        },
-        directives: {
-            focus: {
-                inserted: function (el) {
-                    el.focus();
-                }
-            },
         }
     }
 </script>

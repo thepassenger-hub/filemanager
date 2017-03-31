@@ -2,14 +2,24 @@
     <div class="columns">
         <div class="column is-2">
             <button @click="prevFolder()" :class="classObj" type="button" class="button is-dark">Back</button><br>
-            <button @click="newFileFormVisible = true" type="button" class="button is-primary">Create File</button><br>
-            <button @click="showNotification = true" type="button" class="button is-danger">Delete File</button><br>
-            <button @click="showMovePanel = true; role = 'move'" type="button" class="button is-success">Move File</button>            <br>
-            <button @click="showMovePanel = true; role = 'copy'" type="button" class="button is-warning">Copy File</button><br>
-            <button @click="showRenameInput = true" type="button" class="button is-warning">Rename File</button><br>
-            <button @click="" type="button" class="button is-default">Chmod</button><br>
-            <chmod @chmod="chmod($event)"></chmod>
-
+            <button @click="showCreate = !showCreate" class="button isprimary">Create</button><br>
+            <transition name="fade">
+                <button  v-if="showCreate" @click="newFileFormVisible = true; type='file'" type="button" class="button is-primary">File</button>
+            </transition>
+            <transition name="fade">
+                <button v-if="showCreate" @click="newFileFormVisible = true; type='folder'" type="button" class="button is-primary">Folder</button>
+            </transition>
+            
+            
+            <button @click="showNotification = true" type="button" class="button is-danger">Delete</button><br>
+            <button @click="showMovePanel = true; role = 'move'" type="button" class="button is-success">Move</button><br>
+            <button @click="showMovePanel = true; role = 'copy'" type="button" class="button is-warning">Copy</button><br>
+            <button @click="showRenameInput = true" type="button" class="button is-warning">Rename</button><br>
+            <button @click="showChmodInput = true" type="button" class="button is-default">Chmod</button><br>
+            <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
+            <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
+            <chmod @error="showNotifyError($event)" v-if="showChmodInput" @close="showChmodInput = false" @chmod="chmod($event)"></chmod>
+            
         </div>
         <div class="column is-one-third panel panel-default">
             <div class="panel-heading">
@@ -19,11 +29,11 @@
 
             <div class="panel-block">
                 <ul v-if="items">
-                    <dir v-if="items.parentDir" :path="'..'" @open="fetchFiles(items.parentDir)"></dir>
-                    <dir v-for="dir in items.directories" :path="dir" @open="fetchFiles(dir)"></dir>
+                    <dir @selected="fetchFiles(items.parentDir)" v-if="items.parentDir" :path="'..'"></dir>
+                    <dir @selected="fileSelected(dir)" v-for="dir in items.directories" :path="dir" @open="fetchFiles(dir)"></dir>
                     <file @selected="fileSelected(file)" @unMark="unMarkAsSelected" @rename="renameFile($event, file)" @hideForm="showRenameInput = false"
                         v-for="file in items.files" :path="file" :show-rename-input="showRenameInput"></file>
-                    <create-file v-if="newFileFormVisible" @createFile="createFile($event)" @clearNewFileForm="newFileFormVisible = false"></create-file>
+                    <create-file v-if="newFileFormVisible" :type="type" @createFile="createFile($event)" @clearNewFileForm="newFileFormVisible = false"></create-file>
                 </ul>
             </div>
         </div>
@@ -35,14 +45,20 @@
     export default {
         data: function(){
             return {
-                'items': [],
-                'previous': [null],
-                'currentSelected': '',
-                'newFileFormVisible': false,
-                'showNotification': false,
-                'showMovePanel': false,
-                "showRenameInput": false,
-                'role': null
+                items: [],
+                type: null,
+                showCreate: false,
+                previous: [null],
+                currentSelected: '',
+                newFileFormVisible: false,
+                showNotification: false,
+                showMovePanel: false,
+                showRenameInput: false,
+                showChmodInput: false,                
+                showError: false,
+                showSuccess: false,
+                errorMessage: '',
+                role: null
             }
         },
         created() { 
@@ -56,6 +72,12 @@
                 this.currentSelected = file;
                 this.$children.forEach(
                     child => {if (child.path != this.currentSelected) child.isActive = false}
+                );
+            },
+            deselectFile() {
+                this.currentSelected = null;
+                this.$children.forEach(
+                    child => child.isActive = false
                 );
             },
             getFileName(path){
@@ -78,15 +100,18 @@
                         'path': path,
                     }
                 })
-                    .then(function(response){
-                        vm.items = response.data;
-                        if (vm.previous.slice(-1)[0] !== path){
-                            vm.previous.push(path);
-                        };
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .then(function(response){
+                    vm.items = response.data;
+                    if (vm.previous.slice(-1)[0] !== path){
+                        vm.previous.push(path);
+                    };
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                this.deselectFile();
+
                 },
 
             createFile(name) {
@@ -96,7 +121,8 @@
                 }
                 axios.put('/api/files', {
                     path: vm.currentPath(),
-                    file: name
+                    file: name,
+                    type: vm.type
                 })
                 .then(function(response) {
                     console.log(response);
@@ -112,6 +138,7 @@
                 var vm = this;
                 axios.delete('/api/files', {
                     params: {
+                        type: vm.type,
                         path: vm.currentSelected
                     }
                 })
@@ -119,7 +146,7 @@
                     console.log(response);
                     vm.fetchFiles(vm.currentPath());
                 })
-                .then(function(error){
+                .catch(function(error){
                     console.log(error);
                 });
                 vm.showNotification = false;
@@ -136,7 +163,7 @@
                         vm.showMovePanel = false;
                         vm.fetchFiles(vm.currentPath());
                     })
-                    .then(function(error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
@@ -151,7 +178,7 @@
                         vm.showMovePanel = false;
                         vm.fetchFiles(vm.currentPath());
                     })
-                    .then(function(error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
@@ -165,12 +192,42 @@
                 .then(function(response){
                     vm.fetchFiles(vm.currentPath());
                 })
-                .then(function(error){
+                .catch(function(error){
                     console.log(error)
                 })
             },
             chmod(value) {
-                 
+                let vm = this;
+                 axios.patch('/api/files/permission', {
+                     file: vm.currentSelected,
+                     permission: value
+                 }).then(function(response){
+                     vm.showNotifySuccess();
+                     vm.showChmodInput = false;
+                 }).catch(function(error){
+                     console.log(error);
+                     if (error){
+                        console.log(error)
+                        vm.showNotifyError(error.response.data);
+                        vm.showChmodInput = false;
+                        
+                     }
+                 })
+            },
+            showNotifySuccess(){
+                let vm = this;
+                this.showSuccess = true;
+                setTimeout(function(){
+                    vm.showSuccess = false;
+                }, 5000);
+            },
+            showNotifyError(error){
+                let vm = this;
+                this.errorMessage = error;
+                this.showError = true;
+                setTimeout(function(){
+                    vm.showError = false;
+                }, 15000);
             }
         },
         computed: {

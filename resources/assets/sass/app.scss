@@ -30,6 +30,11 @@ button {
 input {
     width: 50% !important;
 }
-.rename_inputs {
-    // display: none;
+
+.fade-enter-active, .fade-leave-active {
+  transition:transform .5s ease;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  transform: scale(0.1)
+//   width: 20%;
 }

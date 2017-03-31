@@ -22,25 +22,43 @@ class FilesController extends Controller
     {
         $path = request('path');
         $path = $path ? $path : getenv("HOME")."/Desktop";
-        $file = request('file');
+        $file = $path . '/' . request('file');
+        $type = request('type');
         try {
-            \File::put($path . '/' . $file, '');
+            if (\File::exists($file)) {
+                return response('This file or directory already exists.', 400);
+            }
+            if ($type == 'file') {
+                \File::put($file, '');
+            }
+            else if ($type == 'folder') {
+                \File::makeDirectory($file);
+            };
         }
         catch (Exception $e) {
-            return 'Error';
+            return response('There was an error performing your request.', 500);
         }
     }
 
     public function destroy()
     {
         $path = request('path');
+        $type = request('type');
         if (\File::exists($path)) {
             try {
-                \File::delete($path);
+                if (\File::isFile($path)) {
+                    \File::delete($path);
+                }
+                else if (\File::isDirectory($path)) {
+                    \File::deleteDirectory($path);
+                };
             }
             catch (Exception $e) {
-                return 'Error';
+                return response('There was an error processing your request. Try again later.', 500);
             };
+        }
+        else {
+            return response('The file or directory doesn\'t exist.', 400);
         };
     }
 
@@ -96,5 +114,22 @@ class FilesController extends Controller
                 return response('Something went wrong. Try again', 500);
             }
         }
+    }
+
+    public function permission()
+    {
+        $file = request('file');
+        $permission = request('permission');
+        if (preg_match('/^[0-7]{3}$/', $permission) && \File::exists($file)){
+            if (\File::chmod($file, octdec($permission))) {
+                return response('Permission change successful', 200);
+            }
+            else {
+                return response('Something went wrong. Try again later', 500);
+            };
+        }
+        else {
+            return response('The file entered doesn\'t exist or the permission number is invalid', 400);
+        };
     }
 }
