@@ -11299,9 +11299,7 @@ Vue.filter('prettyPrint', function (path) {
     return path;
 });
 Vue.directive('focus', {
-    // When the bound element is inserted into the DOM...
     inserted: function inserted(el) {
-        // Focus the element
         el.focus();
     }
 });
@@ -12269,19 +12267,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['path'],
+    props: ['path', 'showRenameInput'],
     data: function data() {
         return {
-            isActive: false
+            isActive: false,
+            hideFile: false
         };
     },
 
+    computed: {
+        renameFile: function renameFile() {
+            return this.showRenameInput;
+        }
+    },
     methods: {
         newActiveComponent: function newActiveComponent() {
             this.$emit('selected');
             this.isActive = true;
+        },
+
+        selected: function selected() {
+            this.hideFile = true;
+            this.$emit('unMark');
+        },
+        rename: function rename(newName) {
+            this.$emit('rename', newName);
+            this.isActive = false;
+            this.$emit('hideForm');
+        },
+        hideForm: function hideForm() {
+            this.isActive = false;
+            this.$emit('hideForm');
+            this.hideFile = false;
         }
     }
 });
@@ -12300,13 +12320,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['path', 'showRenameInput'],
+    props: ['file', 'showRenameInput'],
     data: function data() {
         return {
-            'isActive': false,
-            'hideFile': false
+            isActive: false,
+            hideFile: false
         };
     },
     computed: {
@@ -12385,11 +12406,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             items: [],
+            files: [],
             type: null,
             showCreate: false,
             previous: [null],
@@ -12454,7 +12478,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     vm.previous.push(path);
                 };
             }).catch(function (error) {
-                console.log(error);
+                return console.log(error);
             });
 
             this.deselectFile();
@@ -12487,13 +12511,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(response);
                 vm.fetchFiles(vm.currentPath());
             }).catch(function (error) {
-                console.log(error);
+                return console.log(error);
             });
             vm.showNotification = false;
         },
         moveFile: function moveFile(path) {
             var vm = this;
-            var file = $('.active').attr('data-path');
             axios.patch('/api/files/move', {
                 path: path,
                 file: vm.currentSelected
@@ -12501,19 +12524,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.showMovePanel = false;
                 vm.fetchFiles(vm.currentPath());
             }).catch(function (error) {
-                console.log(error);
+                return console.log(error);
             });
         },
         copyFile: function copyFile(path) {
             var vm = this;
             axios.put('/api/files/copy', {
                 path: path,
-                file: vm.currentSelected
+                file: vm.currentSelected,
+                type: vm.type
             }).then(function (response) {
                 vm.showMovePanel = false;
                 vm.fetchFiles(vm.currentPath());
             }).catch(function (error) {
-                console.log(error);
+                return console.log(error);
             });
         },
         renameFile: function renameFile(newName, path) {
@@ -12524,7 +12548,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 vm.fetchFiles(vm.currentPath());
             }).catch(function (error) {
-                console.log(error);
+                return console.log(error);
             });
         },
         chmod: function chmod(value) {
@@ -12542,6 +12566,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     vm.showNotifyError(error.response.data);
                     vm.showChmodInput = false;
                 }
+            });
+        },
+        openFile: function openFile() {
+            var vm = this;
+            axios.get('/api/files/open', {
+                params: {
+                    file: vm.currentSelected
+                }
+            }).then(function (response) {
+                vm.showNotifySuccess();
+            }).catch(function (error) {
+                vm.showNotifyError(error.response.data);
             });
         },
         showNotifySuccess: function showNotifySuccess() {
@@ -32758,7 +32794,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.showChmodInput = true
+        _vm.showChmodInput = !_vm.showChmodInput
       }
     }
   }, [_vm._v("Chmod")]), _c('br'), _vm._v(" "), _c('notify-success', {
@@ -32788,7 +32824,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showError = false
       }
     }
-  }), _vm._v(" "), (_vm.showChmodInput) ? _c('chmod', {
+  }), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showChmodInput) ? _c('chmod', {
     on: {
       "error": function($event) {
         _vm.showNotifyError($event)
@@ -32800,7 +32840,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.chmod($event)
       }
     }
-  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
+  }) : _vm._e()], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "column is-one-third panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
@@ -32825,11 +32865,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }) : _vm._e(), _vm._v(" "), _vm._l((_vm.items.directories), function(dir) {
     return _c('dir', {
       attrs: {
-        "path": dir
+        "path": dir,
+        "show-rename-input": _vm.showRenameInput
       },
       on: {
         "selected": function($event) {
           _vm.fileSelected(dir)
+        },
+        "unMark": _vm.unMarkAsSelected,
+        "rename": function($event) {
+          _vm.renameFile($event, dir)
+        },
+        "hideForm": function($event) {
+          _vm.showRenameInput = false
         },
         "open": function($event) {
           _vm.fetchFiles(dir)
@@ -32839,16 +32887,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _vm._l((_vm.items.files), function(file) {
     return _c('file', {
       attrs: {
-        "path": file,
+        "file": file,
         "show-rename-input": _vm.showRenameInput
       },
       on: {
+        "open": _vm.openFile,
         "selected": function($event) {
-          _vm.fileSelected(file)
+          _vm.fileSelected(file.path)
         },
         "unMark": _vm.unMarkAsSelected,
         "rename": function($event) {
-          _vm.renameFile($event, file)
+          _vm.renameFile($event, file.path)
         },
         "hideForm": function($event) {
           _vm.showRenameInput = false
@@ -32899,13 +32948,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       active: _vm.isActive
     },
     on: {
-      "click": _vm.newActiveComponent
+      "click": _vm.newActiveComponent,
+      "dblclick": function($event) {
+        $event.preventDefault();
+        _vm.$emit('open')
+      }
     }
   }, [_c('span', {
     staticClass: "fa fa-file"
   }), _vm._v(" "), (!_vm.hideFile) ? _c('span', {
     staticClass: "files"
-  }, [_vm._v(_vm._s(_vm._f("prettyPrint")(_vm.path)))]) : _vm._e(), _vm._v(" "), (_vm.renameFile && _vm.isActive) ? _c('rename-file', {
+  }, [_vm._v(_vm._s(_vm._f("prettyPrint")(_vm.file.path)))]) : _vm._e(), _vm._v(" "), _c('span', {
+    domProps: {
+      "textContent": _vm._s(_vm.file.size)
+    }
+  }), _vm._v(" "), (_vm.renameFile && _vm.isActive) ? _c('rename-file', {
     attrs: {
       "name": _vm._f("prettyPrint")(_vm.path)
     },
@@ -33044,9 +33101,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "fa fa-folder"
-  }), _vm._v(" "), _c('span', {
+  }), _vm._v(" "), (!_vm.hideFile) ? _c('span', {
     staticClass: "dirs"
-  }, [_vm._v(_vm._s(_vm._f("prettyPrint")(_vm.path)))])])
+  }, [_vm._v(_vm._s(_vm._f("prettyPrint")(_vm.path)))]) : _vm._e(), _vm._v(" "), (_vm.renameFile && _vm.isActive) ? _c('rename-file', {
+    attrs: {
+      "name": _vm._f("prettyPrint")(_vm.path)
+    },
+    on: {
+      "selected": _vm.selected,
+      "renameFile": function($event) {
+        _vm.rename($event)
+      },
+      "hideForm": _vm.hideForm
+    }
+  }) : _vm._e()], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -33111,11 +33179,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _vm._l((_vm.items.files), function(item) {
     return _c('li', {
       attrs: {
-        "data-path": item
+        "data-path": item.path
       }
     }, [_c('span', {
       staticClass: "fa fa-file"
-    }), _vm._v("                                \n                    " + _vm._s(_vm._f("prettyPrint")(item)) + "\n                ")])
+    }), _vm._v("                                \n                    " + _vm._s(_vm._f("prettyPrint")(item.path)) + "\n                ")])
   })], 2) : _vm._e()])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {

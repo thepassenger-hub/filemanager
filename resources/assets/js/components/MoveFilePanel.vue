@@ -19,9 +19,9 @@
                             <span class="fa fa-folder"></span>
                             {{ item | prettyPrint }}
                         </li>
-                        <li v-for="item in items.files" :data-path="item">
+                        <li v-for="item in items.files" :data-path="item.path">
                             <span class="fa fa-file"></span>                                
-                            {{ item | prettyPrint }}
+                            {{ item.path | prettyPrint }}
                         </li>
                     </ul>
                 </div>

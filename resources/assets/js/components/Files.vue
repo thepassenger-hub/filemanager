@@ -15,11 +15,12 @@
             <button @click="showMovePanel = true; role = 'move'" type="button" class="button is-success">Move</button><br>
             <button @click="showMovePanel = true; role = 'copy'" type="button" class="button is-warning">Copy</button><br>
             <button @click="showRenameInput = true" type="button" class="button is-warning">Rename</button><br>
-            <button @click="showChmodInput = true" type="button" class="button is-default">Chmod</button><br>
+            <button @click="showChmodInput = !showChmodInput" type="button" class="button is-default">Chmod</button><br>
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
-            <chmod @error="showNotifyError($event)" v-if="showChmodInput" @close="showChmodInput = false" @chmod="chmod($event)"></chmod>
-            
+            <transition name="fade">            
+                <chmod @error="showNotifyError($event)" v-if="showChmodInput" @close="showChmodInput = false" @chmod="chmod($event)"></chmod>
+            </transition>
         </div>
         <div class="column is-one-third panel panel-default">
             <div class="panel-heading">
@@ -30,9 +31,10 @@
             <div class="panel-block">
                 <ul v-if="items">
                     <dir @selected="fetchFiles(items.parentDir)" v-if="items.parentDir" :path="'..'"></dir>
-                    <dir @selected="fileSelected(dir)" v-for="dir in items.directories" :path="dir" @open="fetchFiles(dir)"></dir>
-                    <file @selected="fileSelected(file)" @unMark="unMarkAsSelected" @rename="renameFile($event, file)" @hideForm="showRenameInput = false"
-                        v-for="file in items.files" :path="file" :show-rename-input="showRenameInput"></file>
+                    <dir @selected="fileSelected(dir)" @unMark="unMarkAsSelected" @rename="renameFile($event, dir)" @hideForm="showRenameInput = false" 
+                    v-for="dir in items.directories" :path="dir" @open="fetchFiles(dir)" :show-rename-input="showRenameInput"></dir>
+                    <file @open="openFile" @selected="fileSelected(file.path)" @unMark="unMarkAsSelected" @rename="renameFile($event, file.path)" @hideForm="showRenameInput = false"
+                        v-for="file in items.files" :file="file" :show-rename-input="showRenameInput"></file>
                     <create-file v-if="newFileFormVisible" :type="type" @createFile="createFile($event)" @clearNewFileForm="newFileFormVisible = false"></create-file>
                 </ul>
             </div>
@@ -46,6 +48,7 @@
         data: function(){
             return {
                 items: [],
+                files: [],
                 type: null,
                 showCreate: false,
                 previous: [null],
@@ -71,7 +74,9 @@
             fileSelected(file) {
                 this.currentSelected = file;
                 this.$children.forEach(
-                    child => {if (child.path != this.currentSelected) child.isActive = false}
+                    child => {
+                        if (child.path != this.currentSelected) child.isActive = false
+                        }
                 );
             },
             deselectFile() {
@@ -100,15 +105,13 @@
                         'path': path,
                     }
                 })
-                .then(function(response){
+                .then(response => {
                     vm.items = response.data;
                     if (vm.previous.slice(-1)[0] !== path){
                         vm.previous.push(path);
                     };
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(error => console.log(error));
 
                 this.deselectFile();
 
@@ -124,12 +127,12 @@
                     file: name,
                     type: vm.type
                 })
-                .then(function(response) {
+                .then(response => {
                     console.log(response);
                     vm.fetchFiles(vm.currentPath());
                     vm.newFileFormVisible = false;
                 })
-                .catch(function(error) {
+                .catch(error => {
                     console.log(error);
                 });
             },
@@ -142,45 +145,39 @@
                         path: vm.currentSelected
                     }
                 })
-                .then(function(response){
+                .then(response => {
                     console.log(response);
                     vm.fetchFiles(vm.currentPath());
                 })
-                .catch(function(error){
-                    console.log(error);
-                });
+                .catch(error => console.log(error));
                 vm.showNotification = false;
             },
 
             moveFile(path) {
                 var vm = this;
-                let file = $('.active').attr('data-path');
                 axios.patch('/api/files/move', {
                     path: path,
                     file: vm.currentSelected
                     })
-                    .then(function(response) {
+                    .then(response => {
                         vm.showMovePanel = false;
                         vm.fetchFiles(vm.currentPath());
                     })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                    .catch(error => console.log(error));
             },
 
             copyFile(path){
                 var vm = this;
                 axios.put('/api/files/copy', {
                     path: path,
-                    file: vm.currentSelected
+                    file: vm.currentSelected,
+                    type: vm.type
                     })
-                    .then(function(response) {
+                    .then(response => {
                         vm.showMovePanel = false;
                         vm.fetchFiles(vm.currentPath());
                     })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                    .catch(error => console.log(error));
             },
 
             renameFile(newName, path){
@@ -189,22 +186,20 @@
                     file: path,
                     newName: newName
                 })
-                .then(function(response){
+                .then(response =>{
                     vm.fetchFiles(vm.currentPath());
                 })
-                .catch(function(error){
-                    console.log(error)
-                })
+                .catch(error => console.log(error));
             },
             chmod(value) {
                 let vm = this;
                  axios.patch('/api/files/permission', {
                      file: vm.currentSelected,
                      permission: value
-                 }).then(function(response){
+                 }).then(response =>{
                      vm.showNotifySuccess();
                      vm.showChmodInput = false;
-                 }).catch(function(error){
+                 }).catch(error =>{
                      console.log(error);
                      if (error){
                         console.log(error)
@@ -213,6 +208,18 @@
                         
                      }
                  })
+            },
+            openFile() {
+                var vm = this;
+                axios.get('/api/files/open', {
+                    params: {
+                        file: vm.currentSelected
+                    }
+                }).then(response =>{
+                    vm.showNotifySuccess();
+                }).catch(error =>{
+                    vm.showNotifyError(error.response.data);
+                });
             },
             showNotifySuccess(){
                 let vm = this;

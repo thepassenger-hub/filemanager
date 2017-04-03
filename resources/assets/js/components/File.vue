@@ -1,18 +1,19 @@
 <template>
-    <li :class="{active: isActive}" @click="newActiveComponent">
+    <li :class="{active: isActive}" @click="newActiveComponent" @dblclick.prevent="$emit('open')">
         <span class="fa fa-file"></span>   
-        <span v-if="!hideFile" class="files">{{ path | prettyPrint }}</span>
+        <span v-if="!hideFile" class="files">{{ file.path | prettyPrint }}</span>
+        <span v-text="file.size"></span>
         <rename-file @selected="selected" v-if="renameFile && isActive" @renameFile="rename($event)" @hideForm="hideForm" :name="path | prettyPrint"></rename-file>
     </li>
 </template>
 
 <script>
     export default {
-        props: ['path', 'showRenameInput'],
+        props: ['file', 'showRenameInput'],
         data: function() {
             return {
-                'isActive': false,
-                'hideFile': false
+                isActive: false,
+                hideFile: false
             }
         },
         computed: {

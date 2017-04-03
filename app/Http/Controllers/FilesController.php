@@ -10,7 +10,12 @@ class FilesController extends Controller
     {
         $path = request('path');
         $path = $path ? $path : getenv("HOME")."/Desktop";
-        $files = \File::files($path);
+        $allFiles= \File::files($path);
+        $files = [];
+        foreach($allFiles as $file) {
+            $files[] = ['path' => $file, 'size'=>\File::size($file)];
+        };
+        // dd($files);
         $directories = \File::directories($path);
         $parentPath = \File::dirname($path);
         $parentDir = \File::exists($parentPath);
@@ -86,13 +91,24 @@ class FilesController extends Controller
         $fileName = explode('/', $file);
         $fileName = array_pop($fileName);
         $path = $path . '/' . $fileName;
+        $type = request('type');
         if (\File::exists($file)){
             try {
-                \File::copy($file, $path);
+                if ($type == 'file') {
+                    \File::copy($file, $path);
+                }
+                else if ($type == 'folder') {
+                    \File::copyDirectory($file, $path);
+                }
+                else {
+                    return response('No file type provided.', 400);
+                }
             }
             catch (Exception $e) {
-                return $e;
+                return response($e, 500);
             }
+        } else {
+            return response('The file or folder selected does not exist.', 400);
         };
     }
 
@@ -131,5 +147,16 @@ class FilesController extends Controller
         else {
             return response('The file entered doesn\'t exist or the permission number is invalid', 400);
         };
+    }
+
+    public function open()
+    {
+        $file = request('file');
+        if (!$file || ! \File::exists($file)) {
+            return response('The file does not exist.', 400);
+        }
+        shell_exec("xdg-open $file");
+        
+
     }
 }
