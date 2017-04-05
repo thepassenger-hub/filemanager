@@ -1,5 +1,5 @@
 <template>
-        <input v-focus class="input rename_inputs" @blur="$emit('hideForm')"
+        <input v-focus class="column is-8 input rename_inputs" @blur="$emit('hideForm')"
          @keyup.esc="$emit('hideForm')" @click="$emit('selected')"  
          @keyup.enter="$emit('renameFile', newFileName)" 
          v-model="newFileName">

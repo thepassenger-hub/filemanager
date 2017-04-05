@@ -12,7 +12,8 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+window.moment = require('moment');
+Vue.component('pathNav', require('./components/PathNav.vue'));
 Vue.component('files', require('./components/Files.vue'));
 Vue.component('file', require('./components/File.vue'));
 Vue.component('dir', require('./components/Dir.vue'));
@@ -28,7 +29,14 @@ Vue.filter( 'prettyPrint', function(path){
             path = path.splice(-1)[0];
             return path;
         }
-)
+);
+Vue.filter( 'capitalize', function(value){
+            if (!value) return ''
+            value = value.toString()
+            return value.charAt(0).toUpperCase() + value.slice(1)
+        }
+);
+
 Vue.directive('focus', {
   inserted: function (el) {
     el.focus()
@@ -44,7 +52,6 @@ const app = new Vue({
             }
         },
     }
-
 });
 
 

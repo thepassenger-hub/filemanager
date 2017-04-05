@@ -1,9 +1,16 @@
 <template>
-    <div class="notification is-danger">
-        This action is NOT reversible.
-        Are you sure you want to delete this file?
-        <button class="button is-danger" @click="deleteFile" >Yes</button>        
-        <button class="button is-primary" @click="closeNotification">No</button>
+    <div class="message is-danger">
+        <div class="message-header">
+            Careful.
+        </div>
+        <div class="message-body">
+            <p>
+                This action is NOT reversible.
+                Are you sure you want to delete this file?
+            </p>
+            <button class="button is-danger" @click="deleteFile" >Yes</button>        
+            <button class="button is-primary" id="delete-file-button" @click="closeNotification">No</button>
+        </div>
     </div>
 </template>
 

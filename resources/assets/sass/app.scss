@@ -1,12 +1,14 @@
-$primary: #00d1b2;
+$primary: #aeaeae;
 
 .columns {
     width: 100%;
 }
+
 #move_file_panel {
     float: right;
     width: calc(100% - 50px);
 }
+
 .fa.fa-arrows-h{
     width: 50px;
     height: 100%;
@@ -15,14 +17,32 @@ $primary: #00d1b2;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    cursor: pointer;
 }
+
 .fa.fa-arrows-h:active {
     transform: translateX(2px);
 }
+
+.fa.fa-arrows-h:hover {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.fa-folder {
+    color: orangered;
+}
+/* Mark selected component as active to help navigation*/
 .active {
     background-color: $primary;
 }
 
+/* Center the icons vertically */
+span.fa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
 button {
     margin-top: 20px;
 }
@@ -31,12 +51,38 @@ input {
     width: 50% !important;
 }
 
+/* Fade animation */
 .fade-enter-active, .fade-leave-active {
   transition:transform .5s ease;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  transform: scale(0.1)
-//   width: 20%;
+  transform: scale(0.01);
+}
+
+.panel.panel-default.is-half {
+    transition: width .5s ease;
+}
+
+.panel.panel-default.is-10 {
+    transition: width .5s ease;    
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 li:hover {
@@ -48,4 +94,31 @@ li {
     -moz-user-select: none; /* mozilla browsers */
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
+    margin: 0 !important;
+}
+
+li span {
+    padding: 0 !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+li span:nth-child(3),
+li span:nth-child(4) {
+    text-align: end;
+}
+ul {
+    width: 100%;
+}
+
+.button.is-default {
+    margin-bottom: 10px;
+}
+#delete-file-button {
+    float: right;
+}
+
+.secondary-icon {
+    margin-right: 5px;
+    max-height: 24px;
 }

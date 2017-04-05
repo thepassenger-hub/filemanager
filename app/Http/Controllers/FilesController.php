@@ -13,14 +13,19 @@ class FilesController extends Controller
         $allFiles= \File::files($path);
         $files = [];
         foreach($allFiles as $file) {
-            $files[] = ['path' => $file, 'size'=>\File::size($file)];
+            $files[] = ['path' => $file, 
+                        'size'=>\File::size($file),
+                        'lastModified' => \File::lastmodified($file)];
         };
-        // dd($files);
-        $directories = \File::directories($path);
+        $allDirs = \File::directories($path);
+        $dirs = [];
+        foreach($allDirs as $dir) {
+            $dirs[] = ['path' => $dir, 'lastModified' => \File::lastmodified($dir)];
+        };
         $parentPath = \File::dirname($path);
         $parentDir = \File::exists($parentPath);
         $parentDir = $parentDir ? $parentPath : false;
-        return compact('directories', 'files', 'parentDir');
+        return compact('dirs', 'files', 'parentDir', 'path');
     }
 
     public function store()
@@ -79,7 +84,7 @@ class FilesController extends Controller
                 \File::move($file, $path);
             }
             catch (Exception $e) {
-                return $e;
+                return response('The file or directory doesn\'t exist.', 400);
             }
         };
     }

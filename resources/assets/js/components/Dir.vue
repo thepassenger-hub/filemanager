@@ -1,14 +1,15 @@
 <template>
-    <li @dblclick="$emit('open')" :class="{active: isActive}" @click="newActiveComponent">
-        <span class="fa fa-folder"></span>
-        <span v-if="!hideFile" class="dirs">{{ path | prettyPrint }}</span>
-        <rename-file @selected="selected" v-if="renameFile && isActive" @renameFile="rename($event)" @hideForm="hideForm" :name="path | prettyPrint"></rename-file>
+    <li class="columns" @dblclick="$emit('open')" :class="{active: isActive}" @click="newActiveComponent">
+        <span class="column is-1 fa fa-folder"></span>
+        <span v-if="!hideFile" class="column is-8 dirs">{{ dir.path | prettyPrint }}</span>
+        <rename-file @selected="selected" v-if="renameFile && isActive" @renameFile="rename($event)" @hideForm="hideForm" :name="dir.path | prettyPrint"></rename-file>
+        <span v-if="dir.path != '..'" class="column is-3" v-text="lastModified"></span>
     </li>
 </template>
 
 <script>
     export default {
-        props: ['path', 'showRenameInput'],
+        props: ['dir', 'showRenameInput'],
         data() {
             return {
                 isActive: false,
@@ -16,8 +17,21 @@
             }
         },
         computed: {
-            renameFile: function () {
+            renameFile() {
                 return this.showRenameInput;
+            },
+            lastModified() {
+                let date = moment(this.dir.lastModified);
+                let now = moment();
+                if (now.year() !== date.year()) {
+                    return date.format('D/M/gg');
+                }
+                else if (now.date() !== date.date() || now.month() !== date.month()) {
+                    return date.format('MMM D');
+                }
+                else {
+                    return date.format('H:mm');
+                };
             }
         },
         methods: {

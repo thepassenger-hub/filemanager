@@ -8,20 +8,21 @@
             
             <div id="move_file_panel" class="panel panel-default">
                 <div class="panel-heading">
-                    <p>All Files</p>
+                    <p>{{ role | capitalize }} your file or folder here.</p>
+                    <button @click="$emit('close')" class="button is-black">Close</button>
                 </div>
                 <div class="panel-block">
                     <ul v-if="items">
-                        <li v-if="items.parentDir" @click="fetchFiles(items.parentDir)">
-                            <span class="fa fa-folder"></span>                                
-                            ..
-                        <li v-for="item in items.directories" @click="fetchFiles(item)">
-                            <span class="fa fa-folder"></span>
-                            {{ item | prettyPrint }}
+                        <li class="columns" v-if="items.parentDir" @click="fetchFiles(items.parentDir)">
+                            <span class="column is-1 fa fa-folder secondary-icon"></span>   
+                            <span class="column is-11">..</span>                             
+                        <li class="columns" v-for="item in items.dirs" @click="fetchFiles(item.path)">
+                            <span class="column is-1 fa fa-folder secondary-icon"></span>
+                            <span class="column is-11">{{ item.path | prettyPrint }}</span>
                         </li>
-                        <li v-for="item in items.files" :data-path="item.path">
-                            <span class="fa fa-file"></span>                                
-                            {{ item.path | prettyPrint }}
+                        <li class="columns" v-for="item in items.files" :data-path="item.path">
+                            <span class="column is-1 fa fa-file secondary-icon"></span>                                
+                            <span class="column is-11">{{ item.path | prettyPrint }}</span>
                         </li>
                     </ul>
                 </div>

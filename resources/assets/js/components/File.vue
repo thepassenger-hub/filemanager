@@ -1,9 +1,12 @@
 <template>
-    <li :class="{active: isActive}" @click="newActiveComponent" @dblclick.prevent="$emit('open')">
-        <span class="fa fa-file"></span>   
-        <span v-if="!hideFile" class="files">{{ file.path | prettyPrint }}</span>
-        <span v-text="file.size"></span>
-        <rename-file @selected="selected" v-if="renameFile && isActive" @renameFile="rename($event)" @hideForm="hideForm" :name="path | prettyPrint"></rename-file>
+    <li :class="{active: isActive}" class="columns" @click="newActiveComponent" @dblclick.prevent="$emit('open')">
+        <span class="column is-1 fa fa-file"></span>   
+        <span v-if="!hideFile" class="column is-7 files">{{ file.path | prettyPrint }}</span>
+        <rename-file @selected="selected" v-if="renameFile && isActive" @renameFile="rename($event)"
+                     @hideForm="hideForm" :name="file.path | prettyPrint" class="column is-two-thirds"></rename-file>
+        <span class="column is-2" v-text="size"></span>
+        <span class="column is-2" v-text="lastModified"></span>
+        
     </li>
 </template>
 
@@ -17,8 +20,29 @@
             }
         },
         computed: {
-            renameFile: function () {
+            renameFile() {
                 return this.showRenameInput;
+            },
+            lastModified() {
+                let date = moment(this.file.lastModified);
+                let now = moment();
+                if (now.year() !== date.year()) {
+                    return date.format('D/M/gg');
+                }
+                else if (now.date() !== date.date() || now.month() !== date.month()) {
+                    return date.format('MMM D');
+                }
+                else {
+                    return date.format('H:mm');
+                };
+            },
+            size() {
+                let bytes = this.file.size;
+                const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+                if (bytes === 0) return '0'
+                const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+                if (i === 0) return `${bytes} ${sizes[i]}`
+                return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
             }
         },
         methods: {

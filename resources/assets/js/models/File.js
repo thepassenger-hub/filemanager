@@ -1,28 +1,23 @@
-import axios from 
-
-class File {
+import Base from './Base.js';
+class File extends Base{
     constructor(item){
+        super();
         this.path = item.path;
         this.size = item.size;
+        this.lastModified = new Date(item.lastModified *1000);
+        this.type = 'file';
         // this.created_at = item.created_at;
     }
 
-    data() {
-        return {
-            path: this.path,
-            size: this.size,
-            created_at: this.created_at
-        }
-    }
-
-    rename(newName){
+    open(){
         return new Promise((resolve, reject) => {
-            axios.patch('/api/files/rename', {
-                    file: this.path,
-                    newName: newName
+            axios.get('/api/files/open', {
+                    params: {
+                        file: this.path
+                    }
                 })
                 .then(response => resolve(response.data))
-                .catch(error => reject(error.response));
+                .catch(error => reject(error.response.data));
         })
     }
 }

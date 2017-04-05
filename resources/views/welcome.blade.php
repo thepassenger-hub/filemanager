@@ -23,7 +23,7 @@
 
     <div id="app" class="container">
         <div class="panel-heading">
-            <p>All Files</p>
+            <p>File manager. Laravel + Vue.js</p>
         </div>
         <div class="panel-block">
             <files></files>   
