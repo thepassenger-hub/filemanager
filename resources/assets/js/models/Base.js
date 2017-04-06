@@ -1,8 +1,9 @@
+
 class Base {
     constructor(name, path, type) {
-        this.name = name
-        this.path = path
-        this.type = type
+        this.name = name;
+        this.path = path;
+        this.type = type;
     }
 
     create(){
@@ -13,7 +14,7 @@ class Base {
                     type: this.type
                 })
                 .then(response => resolve(response))
-                .catch(error => reject(error.response.data))
+                .catch(error => reject(error.response.data));
         })
     }
 
@@ -25,11 +26,10 @@ class Base {
                 })
                 .then(response => resolve(response.data))
                 .catch(error => reject(error.response.data));
-        })
+        });
     }
 
     chmod(value){
-
         return new Promise((resolve, reject) => {
             axios.patch('/api/files/permission', {
                      file: this.path,
@@ -37,12 +37,10 @@ class Base {
                  })
                  .then(response => resolve(response.data))
                  .catch(error => reject(error.response.data));
-
-        })
+        });
     }
 
     copy(path) {
-
         return new Promise((resolve, reject) => {
             axios.put('/api/files/copy', {
                     path: path,
@@ -77,7 +75,6 @@ class Base {
                 .catch(error => reject(error.response.data));
         });
     }
-
 
 }
 

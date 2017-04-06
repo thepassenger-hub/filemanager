@@ -1,7 +1,9 @@
 <template>
     <div class="columns">
+
         <div class="column is-2">
             <button @click="showCreate = !showCreate" class="button is-primary">Create</button><br>
+
             <transition name="fade">
                 <button  v-if="showCreate" @click="newFileFormVisible = true; type='file'" type="button" class="button is-primary">File</button>
             </transition>
@@ -10,11 +12,12 @@
                 <button v-if="showCreate" @click="newFileFormVisible = true; type='folder'" type="button" class="button is-primary">Folder</button>
             </transition>
             
-            <button @click="showNotification = true" type="button" class="button is-danger" :class="isDisabled">Delete</button><br>
             <button @click="showMovePanel = true; role = 'move'" type="button" class="button is-success" :class="isDisabled">Move</button><br>
             <button @click="showMovePanel = true; role = 'copy'" type="button" class="button is-dark" :class="isDisabled">Copy</button><br>
             <button @click="showRenameInput = true" type="button" class="button is-black" :class="isDisabled">Rename</button><br>
+            <button @click="showNotification = true" type="button" class="button is-danger" :class="isDisabled">Delete</button><br>            
             <button @click="showChmodInput = !showChmodInput" type="button" class="button is-default" :class="isDisabled">Chmod</button><br>
+
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
 
@@ -23,7 +26,9 @@
             </transition>
 
         </div>
+
         <div class="column panel panel-default" :class="isTen">
+
             <div class="panel-heading">
                 <div class="field has-addons">
                     <p class="control">
@@ -37,26 +42,41 @@
                         </a>   
                     </p>
                 </div>
+
                 <path-nav @clicked="fetchFiles($event)" :current-path="currentPath"></path-nav>
+
                 <transition name="fade">    
                     <deleteFileNotification v-if="showNotification" @deleteFile="deleteFile" @closeNotification="showNotification = false"></deleteFileNotification>
-                </transition>             
-            </div>
+                </transition>        
+
+            </div> <!-- End of panel-heading -->
 
             <div class="panel-block">
                 <ul v-if="files || dirs">
-                    <dir @selected="fetchFiles(parentDir)" v-if="parentDir" :dir="{path: '..', lastModified: null}"></dir>
-                    <dir @selected="fileSelected(dir)" @unMark="unMarkAsSelected" @rename="renameFile($event, dir)" @hideForm="showRenameInput = false" 
-                    v-for="dir in dirs" :dir="dir" @open="fetchFiles(dir.path)" :show-rename-input="showRenameInput"></dir>
-                    <file @open="openFile" @selected="fileSelected(file)" @unMark="unMarkAsSelected" @rename="renameFile($event, file)" @hideForm="showRenameInput = false"
-                        v-for="file in files" :file="file" :show-rename-input="showRenameInput"></file>
+
+                    <dir v-if="parentDir" :dir="{path: '..', lastModified: null}" @selected="fetchFiles(parentDir)" ></dir>
+
+                    <dir v-for="dir in dirs" :dir="dir" @open="fetchFiles(dir.path)" :show-rename-input="showRenameInput" 
+                        @selected="fileSelected(dir)" @unMark="unMarkAsSelected" @rename="renameFile($event, dir)" 
+                        @hideForm="showRenameInput = false">
+                    </dir>
+
+                    <file v-for="file in files" :file="file" :show-rename-input="showRenameInput" @open="openFile" 
+                        @selected="fileSelected(file)" @unMark="unMarkAsSelected" @rename="renameFile($event, file)" 
+                        @hideForm="showRenameInput = false">
+                    </file>
+
                     <create-file v-if="newFileFormVisible" :type="type" @createFile="createFile($event)" @clearNewFileForm="newFileFormVisible = false"></create-file>
+
                 </ul>
-            </div>
-        </div>
+            </div> <!--End of panel-body-->
+
+        </div><!-- End of panel -->
+
         <transition name="fade">            
             <moveFilePanel v-if="showMovePanel" :role="role" @close="showMovePanel = false;" @copy="copyFile($event)" @move="moveFile($event)"></moveFilePanel>
         </transition>
+
     </div>
 </template>
 
@@ -88,10 +108,13 @@
                 role: null
             }
         },
+
         created() { 
             this.fetchFiles();
         },
+
         methods: {
+
             fileSelected(file) {
                 this.currentSelected = file;
                 this.$children.forEach(
@@ -100,54 +123,61 @@
                         }
                 );
             },
+
             deselectFile() {
                 this.currentSelected = null;
                 this.$children.forEach(
                     child => child.isActive = false
                 );
             },
+
             getFileName(path){
                 let fileName = path.split('/');
                 fileName = fileName.splice(-1)[0];
                 return fileName;
             },
+
             unMarkAsSelected(){
                 $(".active").removeClass("active");
             },
+
             prevFolder(){
                 this.next.push(this.previous.pop());
                 let path = this.previous.slice(-1)[0];
                 this.fetchFiles(path);
             },
+
             nextFolder(){
                 let path = this.next.pop();
                 this.previous.push(path);
                 this.fetchFiles(path);
             },
+
             fetchFiles(path=null){
                 var vm = this;
+
                 axios.get('/api/files', {
-                    params: {
-                        'path': path,
-                    }
-                })
-                .then(response => {
-                    let newFiles = [];
-                    let newDirs = [];
-                    response.data.files.forEach(file => newFiles.push(new File(file)));
-                    response.data.dirs.forEach(dir => newDirs.push(new Dir(dir)));
-                    vm.files = newFiles;
-                    vm.dirs = newDirs;
-                    vm.parentDir = response.data['parentDir'];                    
-                    if (vm.previous.slice(-1)[0] !== path){
-                        vm.previous.push(path);
-                    };
-                    vm.currentPath = response.data.path;
-                })
-                .catch(error => vm.showNotifyError(error.response.data));
+                        params: {
+                            'path': path,
+                        }
+                    })
+                    .then(response => {
+                        let newFiles = [];
+                        let newDirs = [];
+                        // Create new File and Folder objects and store them in an array.
+                        response.data.files.forEach(file => newFiles.push(new File(file)));  
+                        response.data.dirs.forEach(dir => newDirs.push(new Dir(dir)));
+                        vm.files = newFiles;
+                        vm.dirs = newDirs;
+                        vm.parentDir = response.data['parentDir'];                    
+                        if (vm.previous.slice(-1)[0] !== path){
+                            vm.previous.push(path);
+                        };
+                        vm.currentPath = response.data.path;
+                    })
+                    .catch(error => vm.showNotifyError(error.response.data));
 
                 this.deselectFile();
-
                 },
 
             createFile(name) {
@@ -157,11 +187,11 @@
                 }
                 let item = new Base(name, vm.currentPath, vm.type);
                 item.create()
-                     .then(response => {
-                         vm.fetchFiles(vm.currentPath);
-                         vm.newFileFormVisible = false;
-                     })
-                     .catch(error => vm.showNotifyError(errir));
+                    .then(response => {
+                        vm.fetchFiles(vm.currentPath);
+                        vm.newFileFormVisible = false;
+                    })
+                    .catch(error => vm.showNotifyError(error));
             },
 
             deleteFile() {
@@ -198,6 +228,7 @@
                     .then(response => vm.fetchFiles(vm.currentPath))
                     .catch(error => showNotifyError(error));
             },
+
             chmod(value) {
                 let vm = this;
                 this.currentSelected.chmod(value)
@@ -207,14 +238,15 @@
                     .catch(error => showNotifyError(error));
 
                 vm.showChmodInput = false;
-
             },
+
             openFile() {
                 let vm = this;                
                 this.currentSelected.open()
                     .then(response => vm.showNotifySuccess())
                     .catch(error => vm.showNotifyError(error));
             },
+
             showNotifySuccess(){
                 let vm = this;
                 this.showSuccess = true;
@@ -222,6 +254,7 @@
                     vm.showSuccess = false;
                 }, 5000);
             },
+            
             showNotifyError(error){
                 let vm = this;
                 this.errorMessage = error;
@@ -231,18 +264,21 @@
                 }, 15000);
             }
         },
+
         computed: {
             previousObj(){
                 return {
                     'is-disabled': this.previous.slice(-1)[0] === null
                 };
             },
+
             isTen(){
                 return {
                     'is-10': this.showMovePanel === false,
                     'is-half': this.showMovePanel === true
                 }
             },
+
             nextObj(){
                 return {
                     'is-disabled': this.next.slice(-1)[0] === null
@@ -254,6 +290,5 @@
             }
 
         },
-        
     }
 </script>

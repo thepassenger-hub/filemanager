@@ -1,4 +1,5 @@
 <template>
+
     <div class="field has-addons">
         <p v-for="path in paths" class="control">
             <a @click="$emit('clicked', path)" class="button is-small is-dark" :class="classObj(path)" >
@@ -6,6 +7,7 @@
             </a>
         </p>
     </div>
+    
 </template>
 
 <script>

@@ -26916,21 +26916,10 @@ return zhTw;
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 __webpack_require__(158);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 window.moment = __webpack_require__(0);
+
 Vue.component('pathNav', __webpack_require__(171));
 Vue.component('files', __webpack_require__(167));
 Vue.component('file', __webpack_require__(166));
@@ -26942,32 +26931,26 @@ Vue.component('renameFile', __webpack_require__(172));
 Vue.component('createFile', __webpack_require__(163));
 Vue.component('deleteFileNotification', __webpack_require__(164));
 Vue.component('moveFilePanel', __webpack_require__(168));
+
 Vue.filter('prettyPrint', function (path) {
-    path = path.split('/');
-    path = path.splice(-1)[0];
-    return path;
+  path = path.split('/');
+  path = path.splice(-1)[0];
+  return path;
 });
 Vue.filter('capitalize', function (value) {
-    if (!value) return '';
-    value = value.toString();
-    return value.charAt(0).toUpperCase() + value.slice(1);
+  if (!value) return '';
+  value = value.toString();
+  return value.charAt(0).toUpperCase() + value.slice(1);
 });
 
 Vue.directive('focus', {
-    inserted: function inserted(el) {
-        el.focus();
-    }
+  inserted: function inserted(el) {
+    el.focus();
+  }
 });
 
 var app = new Vue({
-    el: '#app',
-    directives: {
-        focus: {
-            inserted: function inserted(el) {
-                el.focus();
-            }
-        }
-    }
+  el: '#app'
 });
 
 /***/ }),
@@ -27827,6 +27810,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -27834,6 +27819,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             value: ''
         };
     },
+
     methods: {
         validate: function validate() {
             if (/^[0-7]{3}$/.test(this.value)) {
@@ -27862,16 +27848,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ["type"],
+
     data: function data() {
         return {
             newFileName: ''
         };
-    },
-    created: function created() {
-        console.log(this);
     },
 
     computed: {
@@ -27887,6 +27873,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
 //
 //
 //
@@ -27931,15 +27922,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['dir', 'showRenameInput'],
+
     data: function data() {
         return {
             isActive: false,
             hideFile: false
         };
     },
+
 
     computed: {
         renameFile: function renameFile() {
@@ -27957,21 +27956,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
         }
     },
+
     methods: {
         newActiveComponent: function newActiveComponent() {
             this.$emit('selected');
             this.isActive = true;
         },
 
+
         selected: function selected() {
             this.hideFile = true;
             this.$emit('unMark');
         },
+
         rename: function rename(newName) {
             this.$emit('rename', newName);
             this.isActive = false;
             this.$emit('hideForm');
         },
+
         hideForm: function hideForm() {
             this.isActive = false;
             this.$emit('hideForm');
@@ -27998,15 +28001,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
     props: ['file', 'showRenameInput'],
+
     data: function data() {
         return {
             isActive: false,
             hideFile: false
         };
     },
+
     computed: {
         renameFile: function renameFile() {
             return this.showRenameInput;
@@ -28031,21 +28042,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return (bytes / 1024 ** i).toFixed(1) + ' ' + sizes[i];
         }
     },
+
     methods: {
         selected: function selected() {
             this.hideFile = true;
             this.$emit('unMark');
         },
+
         rename: function rename(newName) {
             this.$emit('rename', newName);
             this.isActive = false;
             this.$emit('hideForm');
         },
+
         hideForm: function hideForm() {
             this.isActive = false;
             this.$emit('hideForm');
             this.hideFile = false;
         },
+
         newActiveComponent: function newActiveComponent() {
             this.$emit('selected');
             this.isActive = true;
@@ -28062,6 +28077,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_File_js__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Base_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_Dir_js__ = __webpack_require__(159);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -28152,9 +28187,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             role: null
         };
     },
+
     created: function created() {
         this.fetchFiles();
     },
+
 
     methods: {
         fileSelected: function fileSelected(file) {
@@ -28193,6 +28230,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             var vm = this;
+
             axios.get('/api/files', {
                 params: {
                     'path': path
@@ -28200,6 +28238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 var newFiles = [];
                 var newDirs = [];
+                // Create new File and Folder objects and store them in an array.
                 response.data.files.forEach(function (file) {
                     return newFiles.push(new __WEBPACK_IMPORTED_MODULE_0__models_File_js__["a" /* default */](file));
                 });
@@ -28229,7 +28268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 vm.fetchFiles(vm.currentPath);
                 vm.newFileFormVisible = false;
             }).catch(function (error) {
-                return vm.showNotifyError(errir);
+                return vm.showNotifyError(error);
             });
         },
         deleteFile: function deleteFile() {
@@ -28301,6 +28340,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, 15000);
         }
     },
+
     computed: {
         previousObj: function previousObj() {
             return {
@@ -28322,7 +28362,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return { 'is-disabled': this.currentSelected === null };
         }
     }
-
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(11)))
 
@@ -28364,6 +28403,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -28372,10 +28416,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             'previous': [null]
         };
     },
+
     props: ['role'],
+
     created: function created() {
         this.fetchFiles();
     },
+
 
     methods: {
         fetchFiles: function fetchFiles() {
@@ -28411,6 +28458,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['errorMessage']
@@ -28429,6 +28478,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -28438,6 +28489,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -28501,6 +28554,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -28508,7 +28562,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             newFileName: this.name
         };
     },
+
     props: ["name"],
+
     created: function created() {
         this.$emit('selected');
     }
@@ -28628,7 +28684,6 @@ var File = function (_Base) {
         _this.size = item.size;
         _this.lastModified = new Date(item.lastModified * 1000);
         _this.type = 'file';
-        // this.created_at = item.created_at;
         return _this;
     }
 
@@ -29329,13 +29384,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: _vm.className
   }), _vm._v(" "), _c('input', {
     directives: [{
-      name: "focus",
-      rawName: "v-focus"
-    }, {
       name: "model",
       rawName: "v-model",
       value: (_vm.newFileName),
       expression: "newFileName"
+    }, {
+      name: "focus",
+      rawName: "v-focus"
     }],
     staticClass: "column is-7 input",
     attrs: {
@@ -29414,17 +29469,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Folder")]) : _vm._e()]), _vm._v(" "), _c('button', {
-    staticClass: "button is-danger",
-    class: _vm.isDisabled,
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.showNotification = true
-      }
-    }
-  }, [_vm._v("Delete")]), _c('br'), _vm._v(" "), _c('button', {
     staticClass: "button is-success",
     class: _vm.isDisabled,
     attrs: {
@@ -29460,6 +29504,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Rename")]), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "button is-danger",
+    class: _vm.isDisabled,
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showNotification = true
+      }
+    }
+  }, [_vm._v("Delete")]), _c('br'), _vm._v(" "), _c('button', {
     staticClass: "button is-default",
     class: _vm.isDisabled,
     attrs: {
@@ -29591,6 +29646,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "show-rename-input": _vm.showRenameInput
       },
       on: {
+        "open": function($event) {
+          _vm.fetchFiles(dir.path)
+        },
         "selected": function($event) {
           _vm.fileSelected(dir)
         },
@@ -29600,9 +29658,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         "hideForm": function($event) {
           _vm.showRenameInput = false
-        },
-        "open": function($event) {
-          _vm.fetchFiles(dir.path)
         }
       }
     })
@@ -29998,13 +30053,13 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('input', {
     directives: [{
-      name: "focus",
-      rawName: "v-focus"
-    }, {
       name: "model",
       rawName: "v-model",
       value: (_vm.newFileName),
       expression: "newFileName"
+    }, {
+      name: "focus",
+      rawName: "v-focus"
     }],
     staticClass: "column is-8 input rename_inputs",
     domProps: {

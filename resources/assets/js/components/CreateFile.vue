@@ -1,24 +1,25 @@
 <template>
+
     <li class="columns">
-        <form class="columns column is-12" @submit.prevent="$emit('createFile', newFileName)" id="newFileForm">
+        <form class="columns column is-12" id="newFileForm" @submit.prevent="$emit('createFile', newFileName)">
             <span class="column is-1" :class="className"></span>                                
-            <input @keyup.esc="$emit('clearNewFileForm')" v-focus @blur="$emit('clearNewFileForm')"
-             class="column is-7 input" v-model="newFileName" placeholder="file.extension" >
+            <input v-model="newFileName" @keyup.esc="$emit('clearNewFileForm')" @blur="$emit('clearNewFileForm')"
+                class="column is-7 input"  placeholder="file.extension" v-focus>
         </form>
     </li>
+
 </template>
 
 <script>
     export default {
         props: ["type"],
+
         data: function(){
             return {
                 newFileName: ''
             }
         },
-        created(){
-            console.log(this)
-        },
+
         computed: {
             className() {
                 return "fa fa-"+this.type;

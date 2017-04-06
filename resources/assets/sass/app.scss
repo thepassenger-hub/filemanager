@@ -1,8 +1,80 @@
 $primary: #aeaeae;
 
+//-----General Layout stuff-----
+
 .columns {
     width: 100%;
 }
+
+li span:nth-child(3),
+li span:nth-child(4) {
+    text-align: end;
+}
+
+ul {
+    width: 100%;
+}
+
+.fa-folder {
+    color: orangered;
+}
+
+.button.is-default {
+    margin-bottom: 10px;
+}
+
+#delete-file-button {
+    float: right;
+}
+.message.is-danger {
+    width: 50%;
+}
+
+.secondary-icon {
+    margin-right: 5px;
+    max-height: 24px;
+}
+
+/* Mark selected component as active to help navigation*/
+.active {
+    background-color: $primary;
+}
+
+/* Center the icons vertically */
+span.fa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+button {
+    margin-top: 20px;
+}
+
+input {
+    width: 50% !important;
+}
+
+li:hover {
+    cursor: pointer;
+}
+
+li {
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+    margin: 0 !important;
+}
+
+li span {
+    padding: 0 !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+
+//----Move/Copy Panel---
 
 #move_file_panel {
     float: right;
@@ -28,33 +100,11 @@ $primary: #aeaeae;
     animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }
 
-.fa-folder {
-    color: orangered;
-}
-/* Mark selected component as active to help navigation*/
-.active {
-    background-color: $primary;
-}
-
-/* Center the icons vertically */
-span.fa {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-}
-button {
-    margin-top: 20px;
-}
-
-input {
-    width: 50% !important;
-}
-
 /* Fade animation */
 .fade-enter-active, .fade-leave-active {
   transition:transform .5s ease;
 }
+
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   transform: scale(0.01);
 }
@@ -66,6 +116,7 @@ input {
 .panel.panel-default.is-10 {
     transition: width .5s ease;    
 }
+
 
 @keyframes shake {
   10%, 90% {
@@ -83,42 +134,4 @@ input {
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
-}
-
-li:hover {
-    cursor: pointer;
-}
-
-li {
-    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-    -moz-user-select: none; /* mozilla browsers */
-    -khtml-user-select: none; /* webkit (konqueror) browsers */
-    -ms-user-select: none; /* IE10+ */
-    margin: 0 !important;
-}
-
-li span {
-    padding: 0 !important;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-li span:nth-child(3),
-li span:nth-child(4) {
-    text-align: end;
-}
-ul {
-    width: 100%;
-}
-
-.button.is-default {
-    margin-bottom: 10px;
-}
-#delete-file-button {
-    float: right;
-}
-
-.secondary-icon {
-    margin-right: 5px;
-    max-height: 24px;
 }

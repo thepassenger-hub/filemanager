@@ -1,8 +1,11 @@
 <template>
+
     <div class="message is-danger">
+
         <div class="message-header">
             Careful.
         </div>
+
         <div class="message-body">
             <p>
                 This action is NOT reversible.
@@ -11,7 +14,9 @@
             <button class="button is-danger" @click="deleteFile" >Yes</button>        
             <button class="button is-primary" id="delete-file-button" @click="closeNotification">No</button>
         </div>
+        
     </div>
+
 </template>
 
 <script>

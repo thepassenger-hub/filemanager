@@ -1,9 +1,10 @@
 <template>
-        <input v-focus class="column is-8 input rename_inputs" @blur="$emit('hideForm')"
-         @keyup.esc="$emit('hideForm')" @click="$emit('selected')"  
-         @keyup.enter="$emit('renameFile', newFileName)" 
-         v-model="newFileName">
+
+        <input  v-model="newFileName" class="column is-8 input rename_inputs" @blur="$emit('hideForm')" 
+            @keyup.esc="$emit('hideForm')" @click="$emit('selected')" @keyup.enter="$emit('renameFile', newFileName)" v-focus>
+
 </template>
+
 
 <script>
     export default {
@@ -12,7 +13,9 @@
                 newFileName: this.name
             }
         },
+
         props: ["name"],
+        
         created: function() {
             this.$emit('selected');
         }
