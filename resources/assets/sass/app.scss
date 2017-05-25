@@ -89,6 +89,43 @@ li span {
     background-color: whitesmoke;
 }
 
+#modifiers button {
+    background-color: #0049B0;
+    border-color: transparent;
+    color: #fff;
+}
+//----Upload File Stuff ---//
+#add-new-avatar-wrapper {
+  overflow: hidden;
+  
+  background: #eee;
+  border-radius: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.2);
+}
+
+#upload-file-label {
+  width: 100px;
+  cursor: pointer;
+  display: block;
+  margin-left: 20px;
+  margin-top: 10px;  
+}
+
+#upload-file-input {
+  display: none;
+  opacity: 0;
+  text-align: right;
+  cursor: pointer;
+}
+
+#submit-avatar {
+  display: block;
+  margin-top: 10px;
+  margin-left: 20px;
+}
 //----Files Main---//
 
 #files-main {
@@ -104,6 +141,7 @@ li span {
 
 #files-main > .panel-block {
     // border-top: 0;
+    padding-right: 24px;
     border-left: 0;
     border-bottom: 0;
     flex-grow: 1;

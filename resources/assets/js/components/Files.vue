@@ -12,11 +12,29 @@
                 <button v-if="showCreate" @click="newFileFormVisible = true; type='folder'" type="button" class="button is-primary">Folder</button>
             </transition>
             
-            <button @click="showMovePanel = true; role = 'move'" type="button" class="button is-success" :class="isDisabled">Move</button><br>
-            <button @click="showMovePanel = true; role = 'copy'" type="button" class="button is-dark" :class="isDisabled">Copy</button><br>
-            <button @click="showRenameInput = true" type="button" class="button is-black" :class="isDisabled">Rename</button><br>
+            <button @click="showMovePanel = true; role = 'move'" type="button" class="button" :class="isDisabled">Move</button><br>
+            <button @click="showMovePanel = true; role = 'copy'" type="button" class="button" :class="isDisabled">Copy</button><br>
+            <button @click="showRenameInput = true" type="button" class="button" :class="isDisabled">Rename</button><br>
+            <button @click="showChmodInput = !showChmodInput" type="button" class="button" :class="isDisabled">Chmod</button><br>
             <button @click="showNotification = true" type="button" class="button is-danger" :class="isDisabled">Delete</button><br>            
-            <button @click="showChmodInput = !showChmodInput" type="button" class="button is-default" :class="isDisabled">Chmod</button><br>
+
+            <button @click="showUpload = true" type="button" class="button">Upload</button><br>            
+            <transition name="fade">
+                <label v-if="showUpload" class="button is-primary" id="upload-file-label" for="upload-file-input">Browse...</label>
+            </transition>
+
+            <transition name="fade">
+                <input v-if="showUpload && fileToUpload !== null" type="text" class="input" v-model="fileToUpload.name" disabled>
+            </transition>
+
+            <transition name="fade">
+                <input v-if="showUpload" type="file" class="input" id="upload-file-input" @change="setFileToUpload">
+            </transition>
+
+            <transition name="fade">
+                <button v-if="showUpload" type="button" id="submit-avatar" class="button is-default" @click="upload">Upload Avatar</button>
+            </transition>
+            
 
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
@@ -101,10 +119,12 @@
                 showNotification: false,
                 showMovePanel: false,
                 showRenameInput: false,
-                showChmodInput: false,                
+                showChmodInput: false, 
+                showUpload: false,               
                 showError: false,
                 showSuccess: false,
                 errorMessage: '',
+                fileToUpload: null,
                 role: null
             }
         },
@@ -245,6 +265,23 @@
                 this.currentSelected.open()
                     .then(response => vm.showNotifySuccess())
                     .catch(error => vm.showNotifyError(error));
+            },
+            setFileToUpload(event) {
+                let files = event.target.files;
+                if (files.length) 
+                    this.fileToUpload = files[0];
+            },
+
+            upload(){
+                let data = new FormData()
+                var vm = this;
+                data.append('file', this.fileToUpload)
+                data.append('path', this.currentPath)
+                axios.post('/api/files/upload', data)
+                    .then(response => {
+                        this.fileToUpload = null;
+                    })
+                    .catch(error => vm.showNotifyError(error.response.data));
             },
 
             showNotifySuccess(){

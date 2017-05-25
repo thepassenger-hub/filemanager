@@ -9,7 +9,7 @@ class FilesController extends Controller
     public function index()
     {
         $path = request('path');
-        $path = $path ? $path : getenv("HOME")."/Desktop";
+        $path = $path ? $path : getenv("HOME");
         $allFiles= \File::files($path);
         $files = [];
         foreach($allFiles as $file) {
@@ -31,7 +31,7 @@ class FilesController extends Controller
     public function store()
     {
         $path = request('path');
-        $path = $path ? $path : getenv("HOME")."/Desktop";
+        $path = $path ? $path : getenv("HOME");
         $file = $path . '/' . request('file');
         $type = request('type');
         try {
@@ -74,7 +74,7 @@ class FilesController extends Controller
 
     public function move()
     {
-        $path = request('path') ? request('path') : getenv("HOME")."/Desktop";
+        $path = request('path') ? request('path') : getenv("HOME");
         $file = request('file');
         $fileName = explode('/', $file);
         $fileName = array_pop($fileName);
@@ -91,7 +91,7 @@ class FilesController extends Controller
 
     public function copy()
     {
-        $path = request('path') ? request('path') : getenv("HOME")."/Desktop";
+        $path = request('path') ? request('path') : getenv("HOME");
         $file = request('file');
         $fileName = explode('/', $file);
         $fileName = array_pop($fileName);
@@ -161,7 +161,22 @@ class FilesController extends Controller
             return response('The file does not exist.', 400);
         }
         shell_exec("xdg-open $file");
-        
+    }
 
+    public function upload(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|file',
+            'path' => 'required|string'
+        ]);
+
+        if (request()->file('file')->isValid()) {
+            $file = request()->file('file');
+            $originalName = $file->getClientOriginalName();
+            $file = request()->file('file')->storeAs('public', $originalName);
+            $file = base_path('storage/app/') . $file;
+            $path = request('path');
+            \File::move($file, $path . "/$originalName");
+        }
     }
 }

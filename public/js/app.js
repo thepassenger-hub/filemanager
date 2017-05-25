@@ -28159,6 +28159,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -28181,9 +28199,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             showMovePanel: false,
             showRenameInput: false,
             showChmodInput: false,
+            showUpload: false,
             showError: false,
             showSuccess: false,
             errorMessage: '',
+            fileToUpload: null,
             role: null
         };
     },
@@ -28322,6 +28342,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return vm.showNotifySuccess();
             }).catch(function (error) {
                 return vm.showNotifyError(error);
+            });
+        },
+        setFileToUpload: function setFileToUpload(event) {
+            var files = event.target.files;
+            if (files.length) this.fileToUpload = files[0];
+        },
+        upload: function upload() {
+            var _this2 = this;
+
+            var data = new FormData();
+            var vm = this;
+            data.append('file', this.fileToUpload);
+            data.append('path', this.currentPath);
+            axios.post('/api/files/upload', data).then(function (response) {
+                _this2.fileToUpload = null;
+            }).catch(function (error) {
+                return vm.showNotifyError(error.response.data);
             });
         },
         showNotifySuccess: function showNotifySuccess() {
@@ -29472,7 +29509,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Folder")]) : _vm._e()]), _vm._v(" "), _c('button', {
-    staticClass: "button is-success",
+    staticClass: "button",
     class: _vm.isDisabled,
     attrs: {
       "type": "button"
@@ -29484,7 +29521,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Move")]), _c('br'), _vm._v(" "), _c('button', {
-    staticClass: "button is-dark",
+    staticClass: "button",
     class: _vm.isDisabled,
     attrs: {
       "type": "button"
@@ -29496,7 +29533,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Copy")]), _c('br'), _vm._v(" "), _c('button', {
-    staticClass: "button is-black",
+    staticClass: "button",
     class: _vm.isDisabled,
     attrs: {
       "type": "button"
@@ -29507,6 +29544,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Rename")]), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "button",
+    class: _vm.isDisabled,
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showChmodInput = !_vm.showChmodInput
+      }
+    }
+  }, [_vm._v("Chmod")]), _c('br'), _vm._v(" "), _c('button', {
     staticClass: "button is-danger",
     class: _vm.isDisabled,
     attrs: {
@@ -29518,17 +29566,77 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Delete")]), _c('br'), _vm._v(" "), _c('button', {
-    staticClass: "button is-default",
-    class: _vm.isDisabled,
+    staticClass: "button",
     attrs: {
       "type": "button"
     },
     on: {
       "click": function($event) {
-        _vm.showChmodInput = !_vm.showChmodInput
+        _vm.showUpload = true
       }
     }
-  }, [_vm._v("Chmod")]), _c('br'), _vm._v(" "), _c('notify-success', {
+  }, [_vm._v("Upload")]), _c('br'), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showUpload) ? _c('label', {
+    staticClass: "button is-primary",
+    attrs: {
+      "id": "upload-file-label",
+      "for": "upload-file-input"
+    }
+  }, [_vm._v("Browse...")]) : _vm._e()]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showUpload && _vm.fileToUpload !== null) ? _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.fileToUpload.name),
+      expression: "fileToUpload.name"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "disabled": ""
+    },
+    domProps: {
+      "value": (_vm.fileToUpload.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.fileToUpload.name = $event.target.value
+      }
+    }
+  }) : _vm._e()]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showUpload) ? _c('input', {
+    staticClass: "input",
+    attrs: {
+      "type": "file",
+      "id": "upload-file-input"
+    },
+    on: {
+      "change": _vm.setFileToUpload
+    }
+  }) : _vm._e()]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showUpload) ? _c('button', {
+    staticClass: "button is-default",
+    attrs: {
+      "type": "button",
+      "id": "submit-avatar"
+    },
+    on: {
+      "click": _vm.upload
+    }
+  }, [_vm._v("Upload Avatar")]) : _vm._e()]), _vm._v(" "), _c('notify-success', {
     directives: [{
       name: "show",
       rawName: "v-show",
