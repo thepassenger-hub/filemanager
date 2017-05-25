@@ -1,7 +1,7 @@
 <template>
     <div class="columns">
 
-        <div class="column is-2">
+        <div class="column is-2" id="modifiers">
             <button @click="showCreate = !showCreate" class="button is-primary">Create</button><br>
 
             <transition name="fade">
@@ -27,7 +27,7 @@
 
         </div>
 
-        <div class="column panel panel-default" :class="isTen">
+        <div class="column panel panel-default" id="files-main" :class="isTen">
 
             <div class="panel-heading">
                 <div class="field has-addons">

@@ -29430,7 +29430,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "columns"
   }, [_c('div', {
-    staticClass: "column is-2"
+    staticClass: "column is-2",
+    attrs: {
+      "id": "modifiers"
+    }
   }, [_c('button', {
     staticClass: "button is-primary",
     on: {
@@ -29570,7 +29573,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }) : _vm._e()], 1)], 1), _vm._v(" "), _c('div', {
     staticClass: "column panel panel-default",
-    class: _vm.isTen
+    class: _vm.isTen,
+    attrs: {
+      "id": "files-main"
+    }
   }, [_c('div', {
     staticClass: "panel-heading"
   }, [_c('div', {

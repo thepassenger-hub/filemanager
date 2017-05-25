@@ -2,6 +2,9 @@ $primary: #aeaeae;
 
 //-----General Layout stuff-----
 
+html {
+    overflow-y: auto;
+}
 .columns {
     width: 100%;
 }
@@ -73,12 +76,68 @@ li span {
     overflow: hidden;
 }
 
+#app > .panel-block {
+    padding: 0;
+}
+#app > .panel-block > .columns {
+    margin: 0 !important;    
+}
+//----Modifiers Panel---//
+#modifiers {
+    padding-left: 22px;
+    border-right: 1px solid #dbdbdb;
+    background-color: whitesmoke;
+}
 
-//----Move/Copy Panel---
+//----Files Main---//
 
+#files-main {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}
+#files-main > .panel-heading {
+    border-top: 0;
+    border-left: 0;
+}
+
+#files-main > .panel-block {
+    // border-top: 0;
+    border-left: 0;
+    border-bottom: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+//----Move/Copy Panel---//
+
+.column.is-one-third {
+    padding-top: 0;
+    padding-bottom: 0;
+}
 #move_file_panel {
     float: right;
+    height: 100%;
     width: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+}
+
+#move_file_panel > .panel-heading {
+    border-top: 0;
+}
+
+#move_file_panel > .panel-block {
+    border-bottom: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .fa.fa-arrows-h{
