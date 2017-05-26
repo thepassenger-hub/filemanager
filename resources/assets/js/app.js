@@ -13,6 +13,8 @@ Vue.component('renameFile', require('./components/RenameFile.vue'));
 Vue.component('createFile', require('./components/CreateFile.vue'));
 Vue.component('deleteFileNotification', require('./components/DeleteFileNotification.vue'));
 Vue.component('moveFilePanel', require('./components/MoveFilePanel.vue'));
+Vue.component('uploadFile', require('./components/UploadFile.vue'));
+
 
 Vue.filter( 'prettyPrint', function(path){
             path = path.split('/');

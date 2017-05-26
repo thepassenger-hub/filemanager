@@ -89,7 +89,7 @@ li span {
     background-color: whitesmoke;
 }
 
-#modifiers button {
+#modifiers .button {
     background-color: #0049B0;
     border-color: transparent;
     color: #fff;
@@ -97,7 +97,6 @@ li span {
 //----Upload File Stuff ---//
 #add-new-avatar-wrapper {
   overflow: hidden;
-  
   background: #eee;
   border-radius: 1px;
   display: flex;
@@ -107,11 +106,8 @@ li span {
 }
 
 #upload-file-label {
-  width: 100px;
   cursor: pointer;
-  display: block;
-  margin-left: 20px;
-  margin-top: 10px;  
+  margin-top: 20px;  
 }
 
 #upload-file-input {
@@ -121,10 +117,11 @@ li span {
   cursor: pointer;
 }
 
-#submit-avatar {
-  display: block;
-  margin-top: 10px;
-  margin-left: 20px;
+#upload-file-button, #upload-file-abort {
+  margin-top: 0;
+    background-color: #0049B0;
+    color: white;
+
 }
 //----Files Main---//
 
@@ -232,3 +229,60 @@ li span {
     transform: translate3d(4px, 0, 0);
   }
 }
+
+#file-to-upload {
+  text-decoration: none;
+  cursor: default;
+//   -webkit-transition: all 0.5s;
+//   -moz-transition: all 0.5s;
+//   transition: all 0.5s;
+}
+
+
+#file-to-upload {
+  -webkit-animation: neon2 1s ease-in-out infinite alternate;
+  -moz-animation: neon2 1s ease-in-out infinite alternate;
+  animation: neon2 1s ease-in-out infinite alternate;
+}
+
+
+// #file-to-upload .files:hover {
+//   color: #ffffff;
+// }
+/*glow for webkit*/
+
+
+@-webkit-keyframes neon2 {
+  from {
+    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #228DFF;
+  }
+  to {
+    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #228DFF;
+  }
+}
+
+/*glow for mozilla*/
+
+
+@-moz-keyframes neon2 {
+  from {
+    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #228DFF;
+  }
+  to {
+    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #228DFF;
+  }
+}
+
+
+/*glow*/
+
+
+@keyframes neon2 {
+  from {
+    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #0049B0;
+  }
+  to {
+    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #0049B0;
+  }
+}
+

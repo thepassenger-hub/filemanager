@@ -179,4 +179,12 @@ class FilesController extends Controller
             \File::move($file, $path . "/$originalName");
         }
     }
+
+    public function download()
+    {
+        $file = request('file');
+        if (!\File::isFile($file)) return response(['error' => 'Invalid path'], 400);
+        $headers = ['Content-Type' => \File::mimeType($file)];
+        return response()->download($file, fileName($file), $headers);
+    }
 }

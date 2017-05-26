@@ -18,24 +18,12 @@
             <button @click="showChmodInput = !showChmodInput" type="button" class="button" :class="isDisabled">Chmod</button><br>
             <button @click="showNotification = true" type="button" class="button is-danger" :class="isDisabled">Delete</button><br>            
 
-            <button @click="showUpload = true" type="button" class="button">Upload</button><br>            
-            <transition name="fade">
-                <label v-if="showUpload" class="button is-primary" id="upload-file-label" for="upload-file-input">Browse...</label>
-            </transition>
+            <label @click="showUpload = true" class="button" id="upload-file-label" for="upload-file-input">Upload</label>
 
-            <transition name="fade">
-                <input v-if="showUpload && fileToUpload !== null" type="text" class="input" v-model="fileToUpload.name" disabled>
-            </transition>
-
-            <transition name="fade">
-                <input v-if="showUpload" type="file" class="input" id="upload-file-input" @change="setFileToUpload">
-            </transition>
-
-            <transition name="fade">
-                <button v-if="showUpload" type="button" id="submit-avatar" class="button is-default" @click="upload">Upload Avatar</button>
-            </transition>
+            <input v-if="showUpload" type="file" class="input" id="upload-file-input" @change="setFileToUpload">
             
-
+            <button :class="isDisabledDownload" class="button" @click="download">Download</button>
+            
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
 
@@ -84,6 +72,8 @@
                         @hideForm="showRenameInput = false">
                     </file>
 
+                    <upload-file v-if="fileToUpload" :file="fileToUpload" @upload="upload" @abort="fileToUpload = null"></upload-file>
+                    
                     <create-file v-if="newFileFormVisible" :type="type" @createFile="createFile($event)" @clearNewFileForm="newFileFormVisible = false"></create-file>
 
                 </ul>
@@ -280,8 +270,19 @@
                 axios.post('/api/files/upload', data)
                     .then(response => {
                         this.fileToUpload = null;
+                        this.fetchFiles(this.currentPath);
                     })
                     .catch(error => vm.showNotifyError(error.response.data));
+            },
+
+            download() {
+                var vm = this;
+                this.currentSelected.download()
+                    .then(response => {
+                        vm.showNotifySuccess();
+                        this.fetchFiles(this.currentPath);
+                    })
+                    .catch(error => vm.showNotifyError(error));
             },
 
             showNotifySuccess(){
@@ -324,7 +325,13 @@
 
             isDisabled(){
                 return {'is-disabled': this.currentSelected === null}
+            },
+
+            isDisabledDownload(){
+                return {'is-disabled': this.currentSelected === null || this.currentSelected.type !== 'file'};
             }
+
+
 
         },
     }

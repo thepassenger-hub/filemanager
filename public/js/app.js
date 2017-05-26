@@ -26931,6 +26931,7 @@ Vue.component('renameFile', __webpack_require__(172));
 Vue.component('createFile', __webpack_require__(163));
 Vue.component('deleteFileNotification', __webpack_require__(164));
 Vue.component('moveFilePanel', __webpack_require__(168));
+Vue.component('uploadFile', __webpack_require__(192));
 
 Vue.filter('prettyPrint', function (path) {
   path = path.split('/');
@@ -28167,16 +28168,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -28357,8 +28348,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             data.append('path', this.currentPath);
             axios.post('/api/files/upload', data).then(function (response) {
                 _this2.fileToUpload = null;
+                _this2.fetchFiles(_this2.currentPath);
             }).catch(function (error) {
                 return vm.showNotifyError(error.response.data);
+            });
+        },
+        download: function download() {
+            var _this3 = this;
+
+            var vm = this;
+            this.currentSelected.download().then(function (response) {
+                vm.showNotifySuccess();
+                _this3.fetchFiles(_this3.currentPath);
+            }).catch(function (error) {
+                return vm.showNotifyError(error);
             });
         },
         showNotifySuccess: function showNotifySuccess() {
@@ -28397,6 +28400,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         isDisabled: function isDisabled() {
             return { 'is-disabled': this.currentSelected === null };
+        },
+        isDisabledDownload: function isDisabledDownload() {
+            return { 'is-disabled': this.currentSelected === null || this.currentSelected.type !== 'file' };
         }
     }
 });
@@ -28733,6 +28739,23 @@ var File = function (_Base) {
                 axios.get('/api/files/open', {
                     params: {
                         file: _this2.path
+                    }
+                }).then(function (response) {
+                    return resolve(response.data);
+                }).catch(function (error) {
+                    return reject(error.response.data);
+                });
+            });
+        }
+    }, {
+        key: 'download',
+        value: function download() {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+                axios.get('/api/files/download', {
+                    params: {
+                        file: _this3.path
                     }
                 }).then(function (response) {
                     return resolve(response.data);
@@ -29565,56 +29588,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showNotification = true
       }
     }
-  }, [_vm._v("Delete")]), _c('br'), _vm._v(" "), _c('button', {
+  }, [_vm._v("Delete")]), _c('br'), _vm._v(" "), _c('label', {
     staticClass: "button",
     attrs: {
-      "type": "button"
+      "id": "upload-file-label",
+      "for": "upload-file-input"
     },
     on: {
       "click": function($event) {
         _vm.showUpload = true
       }
     }
-  }, [_vm._v("Upload")]), _c('br'), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [(_vm.showUpload) ? _c('label', {
-    staticClass: "button is-primary",
-    attrs: {
-      "id": "upload-file-label",
-      "for": "upload-file-input"
-    }
-  }, [_vm._v("Browse...")]) : _vm._e()]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [(_vm.showUpload && _vm.fileToUpload !== null) ? _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.fileToUpload.name),
-      expression: "fileToUpload.name"
-    }],
-    staticClass: "input",
-    attrs: {
-      "type": "text",
-      "disabled": ""
-    },
-    domProps: {
-      "value": (_vm.fileToUpload.name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.fileToUpload.name = $event.target.value
-      }
-    }
-  }) : _vm._e()]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [(_vm.showUpload) ? _c('input', {
+  }, [_vm._v("Upload")]), _vm._v(" "), (_vm.showUpload) ? _c('input', {
     staticClass: "input",
     attrs: {
       "type": "file",
@@ -29623,20 +29608,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.setFileToUpload
     }
-  }) : _vm._e()]), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [(_vm.showUpload) ? _c('button', {
-    staticClass: "button is-default",
-    attrs: {
-      "type": "button",
-      "id": "submit-avatar"
-    },
+  }) : _vm._e(), _vm._v(" "), _c('button', {
+    staticClass: "button",
+    class: _vm.isDisabledDownload,
     on: {
-      "click": _vm.upload
+      "click": _vm.download
     }
-  }, [_vm._v("Upload Avatar")]) : _vm._e()]), _vm._v(" "), _c('notify-success', {
+  }, [_vm._v("Download")]), _vm._v(" "), _c('notify-success', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -29795,7 +29773,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     })
-  }), _vm._v(" "), (_vm.newFileFormVisible) ? _c('create-file', {
+  }), _vm._v(" "), (_vm.fileToUpload) ? _c('upload-file', {
+    attrs: {
+      "file": _vm.fileToUpload
+    },
+    on: {
+      "upload": _vm.upload,
+      "abort": function($event) {
+        _vm.fileToUpload = null
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.newFileFormVisible) ? _c('create-file', {
     attrs: {
       "type": _vm.type
     },
@@ -39598,6 +39586,117 @@ module.exports = function(module) {
 __webpack_require__(127);
 module.exports = __webpack_require__(128);
 
+
+/***/ }),
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ["file"]
+});
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(191),
+  /* template */
+  __webpack_require__(193),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/filemanager/resources/assets/js/components/UploadFile.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UploadFile.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f6c85f94", Component.options)
+  } else {
+    hotAPI.reload("data-v-f6c85f94", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "columns",
+    attrs: {
+      "id": "file-to-upload"
+    }
+  }, [_c('span', {
+    staticClass: "column is-1 fa fa-file"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "column is-5 files"
+  }, [_vm._v(_vm._s(_vm.file.name))]), _vm._v(" "), _c('span', {
+    staticClass: "column is-4"
+  }, [_c('button', {
+    staticClass: "button is-small",
+    attrs: {
+      "id": "upload-file-button",
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('upload')
+      }
+    }
+  }, [_vm._v("Upload Here")])]), _vm._v(" "), _c('span', {
+    staticClass: "column is-2"
+  }, [_c('button', {
+    staticClass: "button is-small",
+    attrs: {
+      "id": "upload-file-abort",
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('abort')
+      }
+    }
+  }, [_vm._v("Abort")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-f6c85f94", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
