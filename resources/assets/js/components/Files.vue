@@ -22,8 +22,6 @@
 
             <input v-if="showUpload" type="file" class="input" id="upload-file-input" @change="setFileToUpload">
             
-            <button :class="isDisabledDownload" class="button" @click="download">Download</button>
-            
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
 
@@ -275,16 +273,6 @@
                     .catch(error => vm.showNotifyError(error.response.data));
             },
 
-            download() {
-                var vm = this;
-                this.currentSelected.download()
-                    .then(response => {
-                        vm.showNotifySuccess();
-                        this.fetchFiles(this.currentPath);
-                    })
-                    .catch(error => vm.showNotifyError(error));
-            },
-
             showNotifySuccess(){
                 let vm = this;
                 this.showSuccess = true;
@@ -325,14 +313,7 @@
 
             isDisabled(){
                 return {'is-disabled': this.currentSelected === null}
-            },
-
-            isDisabledDownload(){
-                return {'is-disabled': this.currentSelected === null || this.currentSelected.type !== 'file'};
             }
-
-
-
-        },
+        }
     }
 </script>

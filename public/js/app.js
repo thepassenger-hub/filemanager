@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 187);
+/******/ 	return __webpack_require__(__webpack_require__.s = 190);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1899,7 +1899,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(161)("./" + name);
+            __webpack_require__(162)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -4534,7 +4534,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(186)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(189)(module)))
 
 /***/ }),
 /* 1 */
@@ -26916,22 +26916,22 @@ return zhTw;
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(158);
+__webpack_require__(159);
 
 window.moment = __webpack_require__(0);
 
-Vue.component('pathNav', __webpack_require__(171));
-Vue.component('files', __webpack_require__(167));
-Vue.component('file', __webpack_require__(166));
-Vue.component('dir', __webpack_require__(165));
-Vue.component('notifyError', __webpack_require__(169));
-Vue.component('notifySuccess', __webpack_require__(170));
-Vue.component('chmod', __webpack_require__(162));
-Vue.component('renameFile', __webpack_require__(172));
-Vue.component('createFile', __webpack_require__(163));
-Vue.component('deleteFileNotification', __webpack_require__(164));
-Vue.component('moveFilePanel', __webpack_require__(168));
-Vue.component('uploadFile', __webpack_require__(192));
+Vue.component('pathNav', __webpack_require__(172));
+Vue.component('files', __webpack_require__(168));
+Vue.component('file', __webpack_require__(167));
+Vue.component('dir', __webpack_require__(166));
+Vue.component('notifyError', __webpack_require__(170));
+Vue.component('notifySuccess', __webpack_require__(171));
+Vue.component('chmod', __webpack_require__(163));
+Vue.component('renameFile', __webpack_require__(173));
+Vue.component('createFile', __webpack_require__(164));
+Vue.component('deleteFileNotification', __webpack_require__(165));
+Vue.component('moveFilePanel', __webpack_require__(169));
+Vue.component('uploadFile', __webpack_require__(174));
 
 Vue.filter('prettyPrint', function (path) {
   path = path.split('/');
@@ -28075,11 +28075,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_File_js__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_File_js__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_Base_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_Dir_js__ = __webpack_require__(159);
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_Dir_js__ = __webpack_require__(160);
 //
 //
 //
@@ -28353,17 +28351,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return vm.showNotifyError(error.response.data);
             });
         },
-        download: function download() {
-            var _this3 = this;
-
-            var vm = this;
-            this.currentSelected.download().then(function (response) {
-                vm.showNotifySuccess();
-                _this3.fetchFiles(_this3.currentPath);
-            }).catch(function (error) {
-                return vm.showNotifyError(error);
-            });
-        },
         showNotifySuccess: function showNotifySuccess() {
             var vm = this;
             this.showSuccess = true;
@@ -28400,9 +28387,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         isDisabled: function isDisabled() {
             return { 'is-disabled': this.currentSelected === null };
-        },
-        isDisabledDownload: function isDisabledDownload() {
-            return { 'is-disabled': this.currentSelected === null || this.currentSelected.type !== 'file' };
         }
     }
 });
@@ -28615,6 +28599,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 /* 158 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ["file"]
+});
+
+/***/ }),
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -28636,7 +28644,7 @@ window.$ = window.jQuery = __webpack_require__(11);
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = __webpack_require__(184);
+window.Vue = __webpack_require__(187);
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -28667,7 +28675,7 @@ window.axios.defaults.headers.common = {
 // });
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28700,7 +28708,7 @@ var Dir = function (_Base) {
 /* harmony default export */ __webpack_exports__["a"] = (Dir);
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28747,23 +28755,6 @@ var File = function (_Base) {
                 });
             });
         }
-    }, {
-        key: 'download',
-        value: function download() {
-            var _this3 = this;
-
-            return new Promise(function (resolve, reject) {
-                axios.get('/api/files/download', {
-                    params: {
-                        file: _this3.path
-                    }
-                }).then(function (response) {
-                    return resolve(response.data);
-                }).catch(function (error) {
-                    return reject(error.response.data);
-                });
-            });
-        }
     }]);
 
     return File;
@@ -28772,7 +28763,7 @@ var File = function (_Base) {
 /* harmony default export */ __webpack_exports__["a"] = (File);
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -29021,17 +29012,17 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 161;
+webpackContext.id = 162;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(147),
   /* template */
-  __webpack_require__(178),
+  __webpack_require__(180),
   /* scopeId */
   null,
   /* cssModules */
@@ -29058,14 +29049,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(148),
   /* template */
-  __webpack_require__(174),
+  __webpack_require__(176),
   /* scopeId */
   null,
   /* cssModules */
@@ -29092,14 +29083,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(149),
   /* template */
-  __webpack_require__(179),
+  __webpack_require__(181),
   /* scopeId */
   null,
   /* cssModules */
@@ -29126,14 +29117,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(150),
   /* template */
-  __webpack_require__(180),
+  __webpack_require__(182),
   /* scopeId */
   null,
   /* cssModules */
@@ -29160,14 +29151,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(151),
   /* template */
-  __webpack_require__(176),
+  __webpack_require__(178),
   /* scopeId */
   null,
   /* cssModules */
@@ -29194,14 +29185,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(152),
   /* template */
-  __webpack_require__(175),
+  __webpack_require__(177),
   /* scopeId */
   null,
   /* cssModules */
@@ -29228,14 +29219,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(153),
   /* template */
-  __webpack_require__(182),
+  __webpack_require__(184),
   /* scopeId */
   null,
   /* cssModules */
@@ -29262,14 +29253,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(154),
   /* template */
-  __webpack_require__(177),
+  __webpack_require__(179),
   /* scopeId */
   null,
   /* cssModules */
@@ -29296,14 +29287,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(155),
   /* template */
-  __webpack_require__(173),
+  __webpack_require__(175),
   /* scopeId */
   null,
   /* cssModules */
@@ -29330,14 +29321,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(156),
   /* template */
-  __webpack_require__(181),
+  __webpack_require__(183),
   /* scopeId */
   null,
   /* cssModules */
@@ -29364,14 +29355,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(157),
   /* template */
-  __webpack_require__(183),
+  __webpack_require__(185),
   /* scopeId */
   null,
   /* cssModules */
@@ -29398,7 +29389,41 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 173 */
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(158),
+  /* template */
+  __webpack_require__(186),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/giulio/Desktop/Projects/laravel/filemanager/resources/assets/js/components/UploadFile.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UploadFile.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f6c85f94", Component.options)
+  } else {
+    hotAPI.reload("data-v-f6c85f94", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29422,7 +29447,7 @@ if (false) {
 }
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29483,7 +29508,7 @@ if (false) {
 }
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29608,13 +29633,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.setFileToUpload
     }
-  }) : _vm._e(), _vm._v(" "), _c('button', {
-    staticClass: "button",
-    class: _vm.isDisabledDownload,
-    on: {
-      "click": _vm.download
-    }
-  }, [_vm._v("Download")]), _vm._v(" "), _c('notify-success', {
+  }) : _vm._e(), _vm._v(" "), _c('notify-success', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -29825,7 +29844,7 @@ if (false) {
 }
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29878,7 +29897,7 @@ if (false) {
 }
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29902,7 +29921,7 @@ if (false) {
 }
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29952,7 +29971,7 @@ if (false) {
 }
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29986,7 +30005,7 @@ if (false) {
 }
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30032,7 +30051,7 @@ if (false) {
 }
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30061,7 +30080,7 @@ if (false) {
 }
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30149,7 +30168,7 @@ if (false) {
 }
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -30197,7 +30216,57 @@ if (false) {
 }
 
 /***/ }),
-/* 184 */
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "columns",
+    attrs: {
+      "id": "file-to-upload"
+    }
+  }, [_c('span', {
+    staticClass: "column is-1 fa fa-file"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "column is-5 files"
+  }, [_vm._v(_vm._s(_vm.file.name))]), _vm._v(" "), _c('span', {
+    staticClass: "column is-4"
+  }, [_c('button', {
+    staticClass: "button is-small",
+    attrs: {
+      "id": "upload-file-button",
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('upload')
+      }
+    }
+  }, [_vm._v("Upload Here")])]), _vm._v(" "), _c('span', {
+    staticClass: "column is-2"
+  }, [_c('button', {
+    staticClass: "button is-small",
+    attrs: {
+      "id": "upload-file-abort",
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('abort')
+      }
+    }
+  }, [_vm._v("Abort")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-f6c85f94", module.exports)
+  }
+}
+
+/***/ }),
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39522,10 +39591,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(185)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(188)))
 
 /***/ }),
-/* 185 */
+/* 188 */
 /***/ (function(module, exports) {
 
 var g;
@@ -39552,7 +39621,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 186 */
+/* 189 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -39580,123 +39649,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 187 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(127);
 module.exports = __webpack_require__(128);
 
-
-/***/ }),
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["file"]
-});
-
-/***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(191),
-  /* template */
-  __webpack_require__(193),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/giulio/Desktop/Projects/laravel/filemanager/resources/assets/js/components/UploadFile.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] UploadFile.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f6c85f94", Component.options)
-  } else {
-    hotAPI.reload("data-v-f6c85f94", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "columns",
-    attrs: {
-      "id": "file-to-upload"
-    }
-  }, [_c('span', {
-    staticClass: "column is-1 fa fa-file"
-  }), _vm._v(" "), _c('span', {
-    staticClass: "column is-5 files"
-  }, [_vm._v(_vm._s(_vm.file.name))]), _vm._v(" "), _c('span', {
-    staticClass: "column is-4"
-  }, [_c('button', {
-    staticClass: "button is-small",
-    attrs: {
-      "id": "upload-file-button",
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.$emit('upload')
-      }
-    }
-  }, [_vm._v("Upload Here")])]), _vm._v(" "), _c('span', {
-    staticClass: "column is-2"
-  }, [_c('button', {
-    staticClass: "button is-small",
-    attrs: {
-      "id": "upload-file-abort",
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.$emit('abort')
-      }
-    }
-  }, [_vm._v("Abort")])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-f6c85f94", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

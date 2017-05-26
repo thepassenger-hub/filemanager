@@ -21,18 +21,6 @@ class File extends Base{
                 .catch(error => reject(error.response.data));
         })
     }
-
-    download() {
-        return new Promise((resolve, reject) => {
-            axios.get('/api/files/download', {
-                params: {
-                    file: this.path
-                }
-            })
-            .then(response => resolve(response.data))
-            .catch(error => reject(error.response.data));
-        })
-    }
 }
 
 export default File;
