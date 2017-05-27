@@ -5021,8 +5021,7 @@ var Base = function () {
 
             return new Promise(function (resolve, reject) {
                 axios.put('/api/files', {
-                    path: _this.path,
-                    file: _this.name,
+                    file: _this.path + '/' + _this.name,
                     type: _this.type
                 }).then(function (response) {
                     return resolve(response);
@@ -27813,6 +27812,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -28166,6 +28167,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -28312,7 +28316,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.currentSelected.rename(newName).then(function (response) {
                 return vm.fetchFiles(vm.currentPath);
             }).catch(function (error) {
-                return showNotifyError(error);
+                return vm.showNotifyError(error);
             });
         },
         chmod: function chmod(value) {
@@ -29602,7 +29606,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showChmodInput = !_vm.showChmodInput
       }
     }
-  }, [_vm._v("Chmod")]), _c('br'), _vm._v(" "), _c('button', {
+  }, [_vm._v("Chmod")]), _c('br'), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.showChmodInput) ? _c('chmod', {
+    on: {
+      "error": function($event) {
+        _vm.showNotifyError($event)
+      },
+      "close": function($event) {
+        _vm.showChmodInput = false
+      },
+      "chmod": function($event) {
+        _vm.chmod($event)
+      }
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('button', {
     staticClass: "button is-danger",
     class: _vm.isDisabled,
     attrs: {
@@ -29660,23 +29680,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showError = false
       }
     }
-  }), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "fade"
-    }
-  }, [(_vm.showChmodInput) ? _c('chmod', {
-    on: {
-      "error": function($event) {
-        _vm.showNotifyError($event)
-      },
-      "close": function($event) {
-        _vm.showChmodInput = false
-      },
-      "chmod": function($event) {
-        _vm.chmod($event)
-      }
-    }
-  }) : _vm._e()], 1)], 1), _vm._v(" "), _c('div', {
+  })], 1), _vm._v(" "), _c('div', {
     staticClass: "column panel panel-default",
     class: _vm.isTen,
     attrs: {
@@ -29925,7 +29929,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('input', {
+  return _c('div', [_c('input', {
     directives: [{
       name: "focus",
       rawName: "v-focus"
@@ -29937,6 +29941,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "input",
     attrs: {
+      "id": "chmod-input",
       "type": "text",
       "maxlength": "3",
       "placeholder": "000-777"
@@ -29960,7 +29965,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.value = $event.target.value
       }
     }
-  })
+  })])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

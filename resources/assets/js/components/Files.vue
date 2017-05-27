@@ -16,18 +16,21 @@
             <button @click="showMovePanel = true; role = 'copy'" type="button" class="button" :class="isDisabled">Copy</button><br>
             <button @click="showRenameInput = true" type="button" class="button" :class="isDisabled">Rename</button><br>
             <button @click="showChmodInput = !showChmodInput" type="button" class="button" :class="isDisabled">Chmod</button><br>
+            
+            <transition name="fade">            
+                <chmod @error="showNotifyError($event)" v-if="showChmodInput" @close="showChmodInput = false" @chmod="chmod($event)"></chmod>
+            </transition>
+            
             <button @click="showNotification = true" type="button" class="button is-danger" :class="isDisabled">Delete</button><br>            
 
             <label @click="showUpload = true" class="button" id="upload-file-label" for="upload-file-input">Upload</label>
 
             <input v-if="showUpload" type="file" class="input" id="upload-file-input" @change="setFileToUpload">
             
+            
+
             <notify-success @close="showSuccess = false" v-show="showSuccess"></notify-success>
             <notify-error @close="showError = false" :error-message="errorMessage" v-show="showError"></notify-error>
-
-            <transition name="fade">            
-                <chmod @error="showNotifyError($event)" v-if="showChmodInput" @close="showChmodInput = false" @chmod="chmod($event)"></chmod>
-            </transition>
 
         </div>
 
@@ -234,7 +237,7 @@
                 var vm = this;
                 this.currentSelected.rename(newName)
                     .then(response => vm.fetchFiles(vm.currentPath))
-                    .catch(error => showNotifyError(error));
+                    .catch(error => vm.showNotifyError(error));
             },
 
             chmod(value) {

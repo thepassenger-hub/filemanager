@@ -1,7 +1,9 @@
 <template>
-
-    <input v-focus v-model="value" class="input" type="text" maxlength="3" 
+    <div>
+        <input v-focus v-model="value" class="input" id="chmod-input" type="text" maxlength="3" 
         placeholder="000-777" @keyup.esc="$emit('close')" @blur="$emit('close')" @keyup.enter="validate()">
+    </div>
+
 </template>
 
 <script>

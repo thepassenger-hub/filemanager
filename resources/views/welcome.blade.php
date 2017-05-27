@@ -30,6 +30,8 @@
                 <files></files>  
             </div>
 
+            @include('layouts.footer')
+
         </div>
         
         <script src="js/app.js"></script>

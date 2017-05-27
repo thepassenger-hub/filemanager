@@ -2,7 +2,7 @@ import Base from './Base.js';
 
 class File extends Base{
     
-    constructor(item){
+    constructor(item){        
         super();
         this.path = item.path;
         this.size = item.size;

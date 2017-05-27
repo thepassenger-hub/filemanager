@@ -9,8 +9,7 @@ class Base {
     create(){
         return new Promise((resolve, reject) => {
             axios.put('/api/files', {
-                    path: this.path,
-                    file: this.name,
+                    file: this.path + '/' + this.name,
                     type: this.type
                 })
                 .then(response => resolve(response))

@@ -94,6 +94,10 @@ li span {
     border-color: transparent;
     color: #fff;
 }
+
+#chmod-input {
+    margin-top: 20px;
+}
 //----Upload File Stuff ---//
 #add-new-avatar-wrapper {
   overflow: hidden;
@@ -184,16 +188,24 @@ li span {
     justify-content: center;
     flex-direction: column;
     cursor: pointer;
+    -webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 2.5s;
+    animation: shake 2.5s cubic-bezier(.36,.07,.19,.97) both;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;    
 }
 
 .fa.fa-arrows-h:active {
     transform: translateX(2px);
 }
 
-.fa.fa-arrows-h:hover {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+//----Footer ------//
+footer a {
+    color: #0049B0;
 }
-
 /* Fade animation */
 .fade-enter-active, .fade-leave-active {
   transition:transform .5s ease;
@@ -213,19 +225,19 @@ li span {
 
 
 @keyframes shake {
-  10%, 90% {
+  2.5%, 25% {
     transform: translate3d(-1px, 0, 0);
   }
   
-  20%, 80% {
+  5%, 22% {
     transform: translate3d(2px, 0, 0);
   }
 
-  30%, 50%, 70% {
+  10%, 15%, 20% {
     transform: translate3d(-4px, 0, 0);
   }
 
-  40%, 60% {
+  12%, 18% {
     transform: translate3d(4px, 0, 0);
   }
 }
@@ -233,56 +245,30 @@ li span {
 #file-to-upload {
   text-decoration: none;
   cursor: default;
-//   -webkit-transition: all 0.5s;
-//   -moz-transition: all 0.5s;
-//   transition: all 0.5s;
 }
 
-
-#file-to-upload {
-  -webkit-animation: neon2 1s ease-in-out infinite alternate;
-  -moz-animation: neon2 1s ease-in-out infinite alternate;
-  animation: neon2 1s ease-in-out infinite alternate;
+#file-to-upload .files{
+    -webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+    -webkit-animation-name: tremble;
+    -webkit-animation-duration: 2s;
+    font-weight: bold;
+    color: #0049B0;
+    text-shadow: 3px 3px 5px #228DFF;
 }
 
-
-// #file-to-upload .files:hover {
-//   color: #ffffff;
-// }
-/*glow for webkit*/
-
-
-@-webkit-keyframes neon2 {
-  from {
-    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #228DFF;
-  }
-  to {
-    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #228DFF;
-  }
-}
-
-/*glow for mozilla*/
-
-
-@-moz-keyframes neon2 {
-  from {
-    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #228DFF;
-  }
-  to {
-    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #228DFF;
-  }
-}
-
-
-/*glow*/
-
-
-@keyframes neon2 {
-  from {
-    box-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #228DFF, 0 0 7px #228DFF, 0 0 8px #228DFF, 0 0 10px #228DFF, 0 0 15px #0049B0;
-  }
-  to {
-    box-shadow: 0 0 0.5px #fff, 0 0 1px #fff, 0 0 1.5px #fff, 0 0 2px #228DFF, 0 0 3.5px #228DFF, 0 0 4px #228DFF, 0 0 5px #228DFF, 0 0 7.5px #0049B0;
-  }
+@-webkit-keyframes tremble {
+	0% { -webkit-transform: translate(1px, 0.5px) rotate(0deg);}
+	10% { -webkit-transform: translate(-0.5px, -1px) rotate(-1deg); }
+	20% { -webkit-transform: translate(-1.5px, 0px) rotate(1deg); }
+	30% { -webkit-transform: translate(0px, 1.5px) rotate(0deg); }
+	40% { -webkit-transform: translate(1.25px, -0.5px) rotate(1deg); }
+	50% { -webkit-transform: translate(-0.5px, 1px) rotate(-1deg); }
+	60% { -webkit-transform: translate(-1px, 0.5px) rotate(0deg); }
+	70% { -webkit-transform: translate(1.5px, 1px) rotate(-1deg); }
+	80% { -webkit-transform: translate(-0.5px, -1.5px) rotate(1deg); }
+	90% { -webkit-transform: translate(1px, 0.5px) rotate(0deg); }
+	100% { -webkit-transform: translate(1.25px, -1px) rotate(-1deg); }
 }
 
