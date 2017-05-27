@@ -2,9 +2,21 @@
 
 Personal project made with Laravel + Vue.js. Very simple file manager that performs basic crud operations.
 
-![Alt text](/public/images/create.png?raw=true "Optional Title")
-![Alt text](/public/images/avatar-save.png?raw=true "Optional Title")
 
+![screenshot of file creation](/public/images/create.png?raw=true "Create File")
+
+![screenshot of file upload](/public/images/avatar-save.png?raw=true "Upload File")
+
+### Features
+
+* Navigate between folder by double clicking the folders or by using the breadcrumb navigation bar.
+* Upload a file
+* Create a empty file or a directory.
+* Move a file or a directory.
+* Copy a file or a directory.
+* Rename a file or a directory.
+* Chmod of a file or a directory.
+* Delete a file or a directory. Be careful when using this action. It's not reversible.
 
 ### Installing
 
