@@ -3,15 +3,14 @@
 
         <div class="column is-2" id="modifiers">
             <button @click="showCreate = !showCreate" class="button is-primary">Create</button><br>
-
-            <transition name="fade">
-                <button  v-if="showCreate" @click="newFileFormVisible = true; type='file'" type="button" class="button is-primary">File</button>
-            </transition>
-
-            <transition name="fade">
-                <button v-if="showCreate" @click="newFileFormVisible = true; type='folder'" type="button" class="button is-primary">Folder</button>
-            </transition>
-            
+            <div>
+                <transition name="fade">
+                        <button  v-if="showCreate" @click="newFileFormVisible = true; type='file'" type="button" class="button is-primary">File</button>
+                </transition>
+                <transition name="fade">
+                        <button v-if="showCreate" @click="newFileFormVisible = true; type='folder'" type="button" class="button is-primary">Folder</button>
+                </transition>
+            </div>
             <button @click="showMovePanel = true; role = 'move'" type="button" class="button" :class="isDisabled">Move</button><br>
             <button @click="showMovePanel = true; role = 'copy'" type="button" class="button" :class="isDisabled">Copy</button><br>
             <button @click="showRenameInput = true" type="button" class="button" :class="isDisabled">Rename</button><br>

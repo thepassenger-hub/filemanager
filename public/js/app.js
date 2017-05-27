@@ -28169,7 +28169,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -29530,7 +29529,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showCreate = !_vm.showCreate
       }
     }
-  }, [_vm._v("Create")]), _c('br'), _vm._v(" "), _c('transition', {
+  }, [_vm._v("Create")]), _c('br'), _vm._v(" "), _c('div', [_c('transition', {
     attrs: {
       "name": "fade"
     }
@@ -29560,7 +29559,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.type = 'folder'
       }
     }
-  }, [_vm._v("Folder")]) : _vm._e()]), _vm._v(" "), _c('button', {
+  }, [_vm._v("Folder")]) : _vm._e()])], 1), _vm._v(" "), _c('button', {
     staticClass: "button",
     class: _vm.isDisabled,
     attrs: {
